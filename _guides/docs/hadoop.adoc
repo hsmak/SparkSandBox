@@ -100,11 +100,13 @@ You can check if all jobs are running in the background via:
 +
 NOTE: Replace 'start' with 'stop' in order to stop the same jobs.
 
-. use 'hdfs' to create a job history server directory:
+. use 'hdfs' to create job history server directories:
 
  $ hdfs dfs -mkdir -p /mr-history/tmp
  $ hdfs dfs -mkdir -p /mr-history/done
 
+NOTE: Note that the directory is created on hadoop's '*dfs*' filesystem.
+So, a successful execution of this step is an indicator that *HDFS services* are working.
 
 === Verify Installation
 
@@ -122,6 +124,8 @@ NOTE: Replace 'start' with 'stop' in order to stop the same jobs.
 
  $ mapred --daemon start historyserver
 
-. Run a Hadoop example application
+. Run a Hadoop application
 
- $ yarn jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.1.jar pi 8 100000
+ $ yarn jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.1.jar pi 8 100000
++
+NOTE: A successful run is an indicator that Hadoop is working correctly.
