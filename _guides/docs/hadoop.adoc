@@ -1,25 +1,29 @@
 == Hadoop's Quick Guide
+:toc:
+:toclevels: 3
+:sectnums: 3
+:sectnumlevels: 3
 :icons: font
 
-=== Installation & Configuration
+=== Installation
 
-. Download
-. Configure according to http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation[Pseudo-Distributed Operation]
-+
- $ vim etc/hadoop/core-site.xml
-+
-NOTE: Check below for more added entries for the namenode, datanode, and others.
-+
-[source,xml]
-----
-<configuration>
-    <property>
-        <name>fs.defaultFS</name>
-        <value>hdfs://localhost:9000</value>
-    </property>
-</configuration>
-----
+. Download https://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-3.1.1/hadoop-3.1.1.tar.gz[hadoop-3.1.1.tar.gz]
+. Issue the following to extract the archive:
 
+ $ mkdir -p /opt/tools/hadoop
+ $ cd /opt/tools/hadoop
+ $ tar -xvif hadoop-3.1.1/hadoop-3.1.1.tar.gz
+ $ ln -s hadoop-3.1.1 hadoop-current
+
+. Export the following environment variables:
+
+ $ export HADOOP_HOME=/opt/tools/hadoop/hadoop-current
+ $ export PATH=$PATH:$HADOOP_HOME/bin
+
+=== Configurations
+
+NOTE: Configurations in the following steps are according to http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation[Pseudo-Distributed Operation],
+but also somehow can be seen as a minimized http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/ClusterSetup.html[Cluster Setup]
 
 
 . Modify the following files
@@ -84,17 +88,19 @@ include::etc/hadoop/mapred-site.xml[]
  $ hdfs namenode -format
 +
 
-. Start Nodes
+. Start the HDFS Services:
 
- $ hdfs --daemon start seconarynode
- $ hdfs --daemon start seconarynamenode
+ $ hdfs --daemon start namenode
  $ hdfs --daemon start secondarynamenode
+ $ hdfs --daemon start datanode
 +
-You can check if all nodes are running in the background via:
+You can check if all jobs are running in the background via:
 +
  $ jps
++
+NOTE: Replace 'start' with 'stop' in order to stop the same jobs.
 
-. Use "hdfs" command to create the following dfs directories:
+. use 'hdfs' to create a job history server directory:
 
  $ hdfs dfs -mkdir -p /mr-history/tmp
  $ hdfs dfs -mkdir -p /mr-history/done
