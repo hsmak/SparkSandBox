@@ -1,0 +1,121 @@
+== Hadoop's Quick Guide
+:icons: font
+
+=== Installation & Configuration
+
+. Download
+. Configure according to http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation[Pseudo-Distributed Operation]
++
+ $ vim etc/hadoop/core-site.xml
++
+NOTE: Check below for more added entries for the namenode, datanode, and others.
++
+[source,xml]
+----
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+    </property>
+</configuration>
+----
+
+
+
+. Modify the following files
+
+ $ vim ./etc/hadoop/core-site.xml
++
+So, it contains the following properties:
++
+[source,xml]
+----
+include::etc/hadoop/core-site.xml[]
+----
+
+
+
++
+ $ vim ./etc/hadoop/hdfs-site.xml
++
+So, it contains the following properties:
++
+[source,xml]
+----
+include::etc/hadoop/hdfs-site.xml[]
+----
+
+
+
++
+ $ vim ./etc/hadoop/yarn-site.xml
++
+So, it contains the following properties:
++
+[source,xml]
+----
+include::etc/hadoop/yarn-site.xml[]
+----
+
+
+
++
+ $ vim ./etc/hadoop/mapred-site.xml
++
+So, it contains the following properties:
++
+[source,xml]
+----
+include::etc/hadoop/mapred-site.xml[]
+----
+
+
+
+. Create the following HDFS directories
++
+ $ mkdir -p /var/data/hadoop/hdfs/nn
++
+ $ mkdir -p /var/data/hadoop/hdfs/snn
++
+ $ mkdir -p /var/data/hadoop/hdfs/dn
+
+. Format the namenode
++
+ $ hdfs namenode -format
++
+
+. Start Nodes
+
+ $ hdfs --daemon start seconarynode
+ $ hdfs --daemon start seconarynamenode
+ $ hdfs --daemon start secondarynamenode
++
+You can check if all nodes are running in the background via:
++
+ $ jps
+
+. Use "hdfs" command to create the following dfs directories:
+
+ $ hdfs dfs -mkdir -p /mr-history/tmp
+ $ hdfs dfs -mkdir -p /mr-history/done
+
+
+=== Verify Installation
+
+* HDFS front page: http://localhost:9870/
+* Yarn front page: http://localhost:8088/
+
+=== Running Hadoop Application
+
+. Start YARN job:
+
+ $ yarn --daemon start resourcemanager
+ $ yarn --daemon start nodemanager
+
+. Start MapReduce job:
+
+ $ mapred --daemon start historyserver
+
+. Run a Hadoop example application
+
+ $ yarn jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.1.jar pi 8 100000

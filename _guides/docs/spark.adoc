@@ -1,0 +1,31 @@
+== Spark's Quick Guide
+:icons: font
+
+=== Installation & Configuration
+
+. Download
+. Set env var
++
+https://spark.apache.org/docs/latest/hadoop-provided.html[Using Spark's "Hadoop Free" Build]
+
+ $ export SPARK_DIST_CLASSPATH=$(hadoop classpath)
+
+=== Running Spark Application
+
+. Run the first example to verify Spark installation
+
+ $ ./bin/run-example SparkPi 10
+
+. Next run the Scala-native spark shell
+
+ $ ./bin/spark-shell
+
+** We can specify the number of jobs to run:
+
+ $ ./bin/spark-shell --master local[2]
+
+** Python-based Spark shell:
+
+ $ ./bin/pyspark --master local[2]
+
+
