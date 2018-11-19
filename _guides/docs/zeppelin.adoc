@@ -1,0 +1,32 @@
+== Zeppelin
+:toc:
+:toclevels: 3
+:sectnums: 3
+:sectnumlevels: 3
+:icons: font
+
+=== Installation
+
+. Download http://www.apache.org/dyn/closer.cgi/zeppelin/zeppelin-0.8.0/zeppelin-0.8.0-bin-all.tgz[zeppelin-0.8.0-bin-all]
+
+. https://zeppelin.apache.org/docs/0.8.0/quickstart/install.html[Installation Guid]
+
+. Extract
+
+ $ mkdir -p /opt/tools/zeppelin/
+ $ tar -xvif zeppelin.....
+
+. Once Zeppelin is installed, you can change the port for the Zeppelin notebook
+
+ $ cd /opt/zeppelin-0.7.3-bin-all/conf
+ $ cp zeppelin-site.xml.template zeppelin-site.xml
+
+=== Build from Source
+
+. https://zeppelin.apache.org/docs/0.8.0/setup/basics/how_to_build.html[Link]
+
+ $ mvn clean package -DskipTests -Pspark-2.4 -Phadoop-3.1 -Pr -Pscala-2.12
++
+WARNING: Zeppelin still doesn't support scala 2.12 and profile hadoop-3.1 doesn't exist!
+
+. https://zeppelin.apache.org/docs/latest/interpreter/spark.html[Configuring Spark Interpreter]

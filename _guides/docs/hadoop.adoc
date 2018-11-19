@@ -1,4 +1,4 @@
-== Hadoop's Quick Guide
+== Hadoop's Quick Guide (3.1.1)
 :toc:
 :toclevels: 3
 :sectnums: 3
@@ -98,7 +98,7 @@ You can check if all jobs are running in the background via:
 +
  $ jps
 +
-NOTE: Replace 'start' with 'stop' in order to stop the same jobs.
+TIP: Replace 'start' with 'stop' in order to stop the same jobs.
 
 . use 'hdfs' to create job history server directories:
 
@@ -129,3 +129,7 @@ So, a successful execution of this step is an indicator that *HDFS services* are
  $ yarn jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.1.jar pi 8 100000
 +
 NOTE: A successful run is an indicator that Hadoop is working correctly.
++
+TIP: The same example can be run via "hadoop" command with the same arguments:
+
+ $ hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.1.jar pi 8 100000
