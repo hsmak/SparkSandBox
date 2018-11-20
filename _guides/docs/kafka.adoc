@@ -1,4 +1,4 @@
-== Hive's Quick guide
+== Kafka's Quick guide
 :toc:
 :toclevels: 3
 :sectnums: 3

@@ -7,8 +7,8 @@
 
 === Installation
 
-. Download https://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-3.1.1/hadoop-3.1.1.tar.gz[hadoop-3.1.1.tar.gz]
-. Issue the following to extract the archive:
+. Download the archive https://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-3.1.1/hadoop-3.1.1.tar.gz[hadoop-3.1.1.tar.gz]
+. Extract the archive:
 
  $ mkdir -p /opt/tools/hadoop
  $ cd /opt/tools/hadoop
@@ -19,6 +19,20 @@
 
  $ export HADOOP_HOME=/opt/tools/hadoop/hadoop-current
  $ export PATH=$PATH:$HADOOP_HOME/bin
+
++
+Set the variables either as:
+
+** Session-Wide
+
+ $ vim ~/.profile
+ $ source ~/.profile
+
+** System-Wide
+
+ $ vim /etc/profile.d/hadoop.sh
+ $ source /etc/profile.d/hadoop.sh
+
 
 === Configurations
 

@@ -1,4 +1,4 @@
-= Hadoop & Spark Quick Guide
+= Fast Data Stack - Quick Guide
 HusAk
 :toc:
 :toclevels: 3
@@ -6,13 +6,25 @@ HusAk
 :sectnumlevels: 3
 :icons: font
 
-include::spark.adoc[]
+== Introduction
+* Fast Data? Maine objectives?
+* Fast Data vs Big Data?
+* Use Cases? Business model?
+* Streaming, real-time analytics, machine learning, sharing & collaboration (notebooks)
+* Usefulness in Science?
+
 
 include::hadoop.adoc[]
 
-include::pig.adoc[]
-
-include::hive.adoc[]
+include::spark.adoc[]
 
 include::zeppelin.adoc[]
 
+include::akka.adoc[]
+
+include::kafka.adoc[]
+
+
+//include::pig.adoc[]
+
+//include::hive.adoc[]

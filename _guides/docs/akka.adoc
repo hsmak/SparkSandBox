@@ -1,4 +1,4 @@
-== Pig's Quick guide
+== Akka's Quick guide
 :toc:
 :toclevels: 3
 :sectnums: 3
