@@ -7,6 +7,13 @@
 
 === Installation
 
+====
+WARNING: For a successful installtion of *Zeppelin-0.8.0*, [red]#DO NOT# yet install/run with:
+
+* Java-11
+* Scala-2.12
+====
+
 ==== Binary Package
 
 . Download http://www.apache.org/dyn/closer.cgi/zeppelin/zeppelin-0.8.0/zeppelin-0.8.0-bin-all.tgz[zeppelin-0.8.0-bin-all.tgz]
@@ -20,7 +27,7 @@ NOTE: This binary package was built with Scala-2.11 and Spark-2.2??
  $ mkdir -p /opt/tools/zeppelin/
  $ tar -xvif zeppelin-0.8.0-bin-all.tgz
 
-NOTE: Zeppelin runs on port 8080. If you wish to change it to e.g. 9090, proceed with the following file:
+NOTE: Zeppelin runs on port 8080. If you wish to change it to e.g. 9090, proceed with modifying the following file:
 
  $ cd ./conf
  $ cp zeppelin-site.xml.template zeppelin-site.xml
@@ -73,3 +80,7 @@ NOTE: Refer to https://zeppelin.apache.org/docs/latest/setup/deployment/spark_cl
 
 NOTE: Refer to https://zeppelin.apache.org/docs/latest/interpreter/spark.html[Spark Interpret]
 
+
+== Playground
+
+https://zeppelin.apache.org/docs/0.8.0/usage/other_features/zeppelin_context.html[Zeppelin Context]

@@ -13,6 +13,12 @@ HusAk
 * Streaming, real-time analytics, machine learning, sharing & collaboration (notebooks)
 * Usefulness in Science?
 
+====
+WARNING: For a successful installtion of all teh major components in this guide, [red]#DO NOT# yet install/run with:
+
+* Java-11
+* Scala-2.12
+====
 
 include::hadoop.adoc[]
 
