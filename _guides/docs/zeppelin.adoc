@@ -26,12 +26,14 @@ NOTE: This binary package was built with Scala-2.11 and Spark-2.2??
 
  $ mkdir -p /opt/tools/zeppelin/
  $ tar -xvif zeppelin-0.8.0-bin-all.tgz
++
 
 NOTE: Zeppelin runs on port 8080. If you wish to change it to e.g. 9090, proceed with modifying the following file:
 
  $ cd ./conf
  $ cp zeppelin-site.xml.template zeppelin-site.xml
 
++
 [source,xml]
 ----
 include::etc/zeppelin/zeppelin-site.xml[]
