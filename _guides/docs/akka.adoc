@@ -1,4 +1,4 @@
-== Akka's Quick guide
+== Akka's Installation guide
 :toc:
 :toclevels: 3
 :sectnums: 3

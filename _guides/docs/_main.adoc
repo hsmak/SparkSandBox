@@ -1,5 +1,5 @@
-= Fast Data Stack - Quick Guide
-HusAk
+= Fast Data Stack - Quick Installation Guide
+Husain AK
 :toc:
 :toclevels: 3
 :sectnums: 3

@@ -1,4 +1,4 @@
-== Kafka's Quick guide
+== Kafka's Installation guide
 :toc:
 :toclevels: 3
 :sectnums: 3

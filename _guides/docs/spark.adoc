@@ -1,4 +1,4 @@
-== Spark's Quick Guide
+== Spark's Installation Guide
 :toc:
 :toclevels: 3
 :sectnums: 3

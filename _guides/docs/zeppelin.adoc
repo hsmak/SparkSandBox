@@ -1,4 +1,4 @@
-== Zeppelin [yellow]#[Incomplete]#
+== Zeppelin Installation Guide [yellow]#(Incomplete)#
 :toc:
 :toclevels: 3
 :sectnums: 3
