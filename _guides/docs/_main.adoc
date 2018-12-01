@@ -7,7 +7,7 @@ Husain AK
 :icons: font
 
 == Introduction
-* Fast Data? Maine objectives?
+* Fast Data? Main objectives?
 * Fast Data vs Big Data?
 * Use Cases? Business model?
 * Streaming, real-time analytics, machine learning, sharing & collaboration (notebooks)
