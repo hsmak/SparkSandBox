@@ -151,14 +151,24 @@
                         <configuration>
                             <executable>spark-submit</executable>
                             <arguments>
+
                                 <argument>--master</argument>
                                 <argument>local[*]</argument>
+
                                 <argument>--class</argument>
                                 <argument>${mainClass}</argument><!-- add an environment variable in each maven runner-->
+
+                                <!-- uncomment to enable debug mode -->
+                                <!--<argument>&#45;&#45;conf</argument>-->
+                                <!-- suspend=y so it will wait for debugger to attach itself-->
+                                <!--<argument>spark.driver.extraJavaOptions=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005</argument>-->
+
                                 <argument>
                                     ${project.build.directory}/${project.artifactId}-${project.version}.jar
                                 </argument>
+
                             </arguments>
+
                         </configuration>
                     </execution>
                     <execution>
@@ -185,4 +195,5 @@
             </plugin>
         </plugins>
     </build>
+    
 </project>
