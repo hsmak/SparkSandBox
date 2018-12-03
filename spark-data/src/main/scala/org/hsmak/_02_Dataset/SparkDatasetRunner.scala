@@ -11,15 +11,16 @@ object SparkDatasetRunner {
 
     val spark = SparkSession
       .builder
+      .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
       .appName("SparkDatasetRunner")
       .getOrCreate()
 
     import spark.implicits._
 
-    val filePath = "file:///home/hsmak/Development/git/spark-sandbox/spark-rdd-dataframe-dataset/src/main/resources/war-and-peace.txt"
+    val filePath = "file:///home/hsmak/Development/git/spark-sandbox/_data/test.csv"
     // via SparkSQL
     val dataset = spark.read.textFile(filePath)
-      .flatMap(line => line.split(" "))
+      .flatMap(line => line.split(","))
       .map(w => (w, 1))//why can't reduceByKey on Dataset???
 
     dataset.show()

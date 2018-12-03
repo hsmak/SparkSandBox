@@ -12,6 +12,7 @@ object SparkRDDRunner {
 
     val spark = SparkSession
       .builder
+      .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
       .appName("SparkRDDRunner")
       .getOrCreate()
 
@@ -22,10 +23,10 @@ object SparkRDDRunner {
     val sc = spark.sparkContext
 
 
-    val filePath = "file:///home/hsmak/Development/git/spark-sandbox/spark-rdd-dataframe-dataset/src/main/resources/war-and-peace.txt"
+    val filePath = "file:///home/hsmak/Development/git/spark-sandbox/_data/test.csv"
     val rdd = sc.textFile(filePath)
-      .flatMap(line => line.split(" "))
-      .filter(_ contains "Kutuzov")
+      .flatMap(line => line.split(","))
+      .filter(_ contains "Gilbert")
       .map(w => (w, 1))
       .reduceByKey { (a, b) => a + b }
       .sortByKey(true, 4)

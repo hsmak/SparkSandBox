@@ -1,7 +1,0 @@
-== Kafka's Installation guide
-:toc:
-:toclevels: 3
-:sectnums: 3
-:sectnumlevels: 3
-:icons: font
-
