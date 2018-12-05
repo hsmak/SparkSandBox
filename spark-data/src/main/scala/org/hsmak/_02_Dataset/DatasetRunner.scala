@@ -5,19 +5,19 @@ import org.apache.spark.sql.SparkSession
 /**
   * @author ${user.name}
   */
-object SparkDatasetRunner {
+object DatasetRunner {
 
   def main(args: Array[String]) {
 
     val spark = SparkSession
       .builder
       .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
-      .appName("SparkDatasetRunner")
+      .appName("DatasetRunner")
       .getOrCreate()
 
     import spark.implicits._
 
-    val filePath = "file:///home/hsmak/Development/git/spark-sandbox/_data/test.csv"
+    val filePath = "file:///home/hsmak/Development/git/spark-sandbox/_data/house_prices/test.csv"
     // via SparkSQL
     val dataset = spark.read.textFile(filePath)
       .flatMap(line => line.split(","))

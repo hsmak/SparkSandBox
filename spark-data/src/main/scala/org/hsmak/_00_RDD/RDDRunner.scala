@@ -5,7 +5,7 @@ import org.apache.spark.sql.SparkSession
 /**
   * @author ${user.name}
   */
-object SparkRDDRunner {
+object RDDRunner {
 
 
   def main(args: Array[String]) {
@@ -13,7 +13,7 @@ object SparkRDDRunner {
     val spark = SparkSession
       .builder
       .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
-      .appName("SparkRDDRunner")
+      .appName("RDDRunner")
       .getOrCreate()
 
     import spark.implicits._
@@ -23,7 +23,7 @@ object SparkRDDRunner {
     val sc = spark.sparkContext
 
 
-    val filePath = "file:///home/hsmak/Development/git/spark-sandbox/_data/test.csv"
+    val filePath = "file:///home/hsmak/Development/git/spark-sandbox/_data/house_prices/test.csv"
     val rdd = sc.textFile(filePath)
       .flatMap(line => line.split(","))
       .filter(_ contains "Gilbert")
