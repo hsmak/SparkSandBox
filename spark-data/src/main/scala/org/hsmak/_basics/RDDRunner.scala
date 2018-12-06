@@ -1,4 +1,4 @@
-package org.hsmak._00_RDD
+package org.hsmak._basics
 
 import org.apache.spark.sql.SparkSession
 

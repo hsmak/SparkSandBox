@@ -1,4 +1,4 @@
-package org.hsmak._01_DataFrame
+package org.hsmak._basics
 
 import org.apache.spark.sql.SparkSession
 
@@ -14,8 +14,6 @@ object DataFrameRunner {
       .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
       .appName("DataFrameRunner")
       .getOrCreate()
-
-    import spark.implicits._
 
 
 
