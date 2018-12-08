@@ -24,7 +24,7 @@ object RDDWithCSVRunner {
 
 
 
-    val filePath = "file:///home/hsmak/Development/git/spark-sandbox/_data/fdps-v3-master/data/Line_of_numbers.csv"
+    val filePath = s"file://${System.getProperty("user.dir")}/_data/fdps-v3-master/data/Line_of_numbers.csv"
     val inFile = sc.textFile(filePath);
 
     val splitLines = inFile.map(line => {

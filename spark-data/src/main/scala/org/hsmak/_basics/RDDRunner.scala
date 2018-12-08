@@ -23,7 +23,7 @@ object RDDRunner {
     val sc = spark.sparkContext
 
 
-    val filePath = "file:///home/hsmak/Development/git/spark-sandbox/_data/house_prices/test.csv"
+    val filePath = s"file://${System.getProperty("user.dir")}/_data/house_prices/test.csv"
     val rdd = sc.textFile(filePath)
       .flatMap(line => line.split(","))
       .filter(_ contains "Gilbert")
