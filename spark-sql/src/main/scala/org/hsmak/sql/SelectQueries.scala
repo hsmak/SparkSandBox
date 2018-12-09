@@ -137,12 +137,4 @@ object SelectQueries extends App {
   Orders_JOIN_OrderDetails_GROUPBY_ShipCountry.orderBy($"ProductSales".desc).show(10) // Top 10 by Sales
 
 
-  /**
-    * ToDO:
-    * "The Dataset also includes the product table, which I leave to you as an exercise. For example, you can work on a query that returns sales by product or one
-    * that shows the products that are selling more. The Dataset also has date fields, such as order dates, which you can use to query sales by quarters, and reports,
-    * such as Product sales for 1997. The dates are now read in as strings. They need to be converted to the TIMESTAMP data type."
-    *
-    */
-
 }

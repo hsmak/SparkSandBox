@@ -24,7 +24,7 @@ object JoiningQueries extends App {
   case class Product(ProductID: String, ProductName: String, UnitPrice: Double, UnitsInStock: Int, UnitsOnOrder: Int, ReorderLevel: Int, Discontinued: Int)
 
 
-  val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/fdps-v3-master"
+  val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/NW"
 
 
   /** ******************************************************
@@ -48,23 +48,23 @@ object JoiningQueries extends App {
 
   val employeesDF: DataFrame = spark.read
     .option("header", "true")
-    .csv(s"$base_data_dir/data/NW/NW-Employees.csv")
+    .csv(s"$base_data_dir/NW-Employees.csv")
 
 
   val ordersDF = spark.read
     .option("header", "true")
-    .csv(s"$base_data_dir/data/NW/NW-Orders.csv")
+    .csv(s"$base_data_dir/NW-Orders.csv")
 
 
   val orderDetailsDF = spark.read
     .option("header", "true").
     option("inferSchema", "true")
-    .csv(s"$base_data_dir/data/NW-Order-Details.csv")
+    .csv(s"$base_data_dir/NW-Order-Details.csv")
 
 
   val productsDF = spark.read.option("header", "true")
     .option("inferSchema", "true")
-    .csv(s"$base_data_dir/data/NW-Products.csv")
+    .csv(s"$base_data_dir/NW-Products.csv")
 
 
   /** ****************************************************
