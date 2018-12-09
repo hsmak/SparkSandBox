@@ -51,18 +51,20 @@ object JoiningQueries extends App {
     .csv(s"$base_data_dir/data/NW/NW-Employees.csv")
 
 
-  val ordersDF = spark.read.option("header", "true").
-    csv(s"$base_data_dir/data/NW/NW-Orders.csv")
+  val ordersDF = spark.read
+    .option("header", "true")
+    .csv(s"$base_data_dir/data/NW/NW-Orders.csv")
 
 
-  val orderDetailsDF = spark.read.option("header", "true").
-    option("inferSchema", "true").
-    csv(s"$base_data_dir/data/NW-Order-Details.csv")
+  val orderDetailsDF = spark.read
+    .option("header", "true").
+    option("inferSchema", "true")
+    .csv(s"$base_data_dir/data/NW-Order-Details.csv")
 
 
-  val productsDF = spark.read.option("header", "true").
-    option("inferSchema", "true").
-    csv(s"$base_data_dir/data/NW-Products.csv")
+  val productsDF = spark.read.option("header", "true")
+    .option("inferSchema", "true")
+    .csv(s"$base_data_dir/data/NW-Products.csv")
 
 
   /** ****************************************************
@@ -122,6 +124,7 @@ object JoiningQueries extends App {
     * *******************************************************/
 
 
+    //Joining two tables
   val Orders_JOIN_OrderDetails = spark.sql(
 
     """SELECT OrderDetailsTable.OrderID, ShipCountry, UnitPrice, Qty, Discount
@@ -148,12 +151,6 @@ object JoiningQueries extends App {
   Sales_GROUPEDBY_ShipCountry.orderBy($"ProductSales".desc).show(10) // Top 10 by Sales
 
 
-  /**
-    * ToDO:
-    *   - "The Dataset also includes the product table, which I leave to you as an exercise. For example, you can work on a query that returns sales by product or one that shows the products that are selling more. The Dataset also has date fields, such as order dates, which you can use to query sales by quarters, and reports, such as Product sales for 1997. The dates are now read in as strings. They need to be converted to the            TIMESTAMP data type."
-    *
-    */
-
   //Sales GroupedBy Products
   val Sales_GROUPEDBY_Products = spark.sql(
 
@@ -168,10 +165,11 @@ object JoiningQueries extends App {
   Sales_GROUPEDBY_Products.show
 
   /**
-    * for date/timestamp ops, refer to: https://spark.apache.org/docs/latest/api/sql/index.html#timestamp
+    * for date/timestamp ops, refer to:
+    *   - https://spark.apache.org/docs/latest/api/sql/index.html#timestamp
     *
     * ```
-    * trunc(to_date(OrdersTable.OrderDate, 'dd/mm/yy'), 'yyyy')
+    * sql> trunc(to_date(OrdersTable.OrderDate, 'dd/mm/yy'), 'yyyy')
     * ```
     *
     */
