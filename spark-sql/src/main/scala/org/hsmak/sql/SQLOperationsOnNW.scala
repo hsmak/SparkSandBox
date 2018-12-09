@@ -3,7 +3,7 @@ package org.hsmak.sql
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object JoiningQueries extends App {
+object SQLOperationsOnNW extends App {
 
   //turn off Logging
   Logger.getLogger("org").setLevel(Level.OFF)
