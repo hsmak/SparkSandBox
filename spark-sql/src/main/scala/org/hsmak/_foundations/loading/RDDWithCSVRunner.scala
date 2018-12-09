@@ -1,4 +1,4 @@
-package org.hsmak
+package org.hsmak._foundations.loading
 
 import java.io.StringReader
 

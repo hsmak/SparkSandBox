@@ -1,4 +1,4 @@
-package org.hsmak._basics
+package org.hsmak._foundations.data
 
 import org.apache.spark.sql.SparkSession
 
