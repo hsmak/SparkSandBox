@@ -24,8 +24,8 @@ object RDDWithCSVRunner {
 
 
 
-    val filePath = s"file://${System.getProperty("user.dir")}/_data/fdps-v3-master/data/Line_of_numbers.csv"
-    val inFile = sc.textFile(filePath);
+    val filePath = s"file://${System.getProperty("user.dir")}/_data/Line_of_numbers.csv"
+    val inFile = sc.textFile(filePath)
 
     val splitLines = inFile.map(line => {
       val reader = new CSVReader(new StringReader(line))

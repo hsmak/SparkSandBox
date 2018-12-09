@@ -46,7 +46,7 @@ object SQLOperationsOnNW extends App {
     * ******************************************************/
 
 
-  val employeesDF: DataFrame = spark.read
+  val employeesDF = spark.read
     .option("header", "true")
     .csv(s"$base_data_dir/NW-Employees.csv")
 
@@ -73,39 +73,39 @@ object SQLOperationsOnNW extends App {
 
 
   //Employees
-  val employees = employeesDF.as[Employee] // binding to a type
+  val employeesDS = employeesDF.as[Employee] // binding to a type
 
-  println("Employees has " + employees.count() + " rows")
-  employees.show(5)
-  println(employees.head())
-  employees.dtypes.foreach(println) // verify column types
+  println("Employees has " + employeesDS.count() + " rows")
+  employeesDS.show(5)
+  println(employeesDS.head())
+  employeesDS.dtypes.foreach(println) // verify column types
 
 
   //Orders
-  val orders = ordersDF.as[Order]
+  val ordersDS = ordersDF.as[Order]
 
-  println("Orders has " + orders.count() + " rows")
-  orders.show(5)
-  println(orders.head())
-  orders.dtypes.foreach(println)
+  println("Orders has " + ordersDS.count() + " rows")
+  ordersDS.show(5)
+  println(ordersDS.head())
+  ordersDS.dtypes.foreach(println)
 
 
   //OrderDetails
-  val orderDetails = orderDetailsDF.as[OrderDetails]
+  val orderDetailsDS = orderDetailsDF.as[OrderDetails]
 
-  println("Order Details has " + orderDetails.count() + " rows")
-  orderDetails.show(5)
-  println(orderDetails.head())
-  orderDetails.dtypes.foreach(println) // verify column types
+  println("Order Details has " + orderDetailsDS.count() + " rows")
+  orderDetailsDS.show(5)
+  println(orderDetailsDS.head())
+  orderDetailsDS.dtypes.foreach(println) // verify column types
 
 
   //Products
-  val products = productsDF.as[Product]
+  val productsDS = productsDF.as[Product]
 
-  println("Order Details has " + products.count() + " rows")
-  products.show(5)
-  println(products.head())
-  products.dtypes.foreach(println) // verify column types
+  println("Order Details has " + productsDS.count() + " rows")
+  productsDS.show(5)
+  println(productsDS.head())
+  productsDS.dtypes.foreach(println) // verify column types
 
 
   /** ******************************************************
@@ -113,10 +113,10 @@ object SQLOperationsOnNW extends App {
     * ******************************************************/
 
 
-  employees.createOrReplaceTempView("EmployeesTable")
-  orders.createOrReplaceTempView("OrdersTable")
-  orderDetails.createOrReplaceTempView("OrderDetailsTable")
-  products.createOrReplaceTempView("ProductsTable")
+  employeesDS.createOrReplaceTempView("EmployeesTable")
+  ordersDS.createOrReplaceTempView("OrdersTable")
+  orderDetailsDS.createOrReplaceTempView("OrderDetailsTable")
+  productsDS.createOrReplaceTempView("ProductsTable")
 
 
   /** ******************************************************
