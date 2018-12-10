@@ -1,4 +1,4 @@
-package org.hsmak._foundations.loading
+package org.hsmak._foundations
 
 import java.io.StringReader
 
@@ -8,7 +8,7 @@ import org.apache.spark.sql.SparkSession
 /**
   * @author ${user.name}
   */
-object RDDWithCSVRunner {
+object ReadWriteLineNumbers {
 
 
   def main(args: Array[String]) {

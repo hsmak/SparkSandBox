@@ -3,7 +3,7 @@ package org.hsmak.sqlFunctions
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
 
-object AggregateOpsOnCar extends App {
+object AggregateOpsOnCars extends App {
 
   //turn off Logging
   Logger.getLogger("org").setLevel(Level.OFF)
@@ -53,13 +53,18 @@ object AggregateOpsOnCar extends App {
   carMileageDF.show(5)
   carMileageDF.printSchema()
 
-  carMileageDF.describe("mpg","hp","weight","automatic").show()
+  carMileageDF.describe("mpg", "hp", "weight", "automatic").show()
 
-  carMileageDF.groupBy("automatic").avg("mpg","torque").show()
+  carMileageDF.groupBy("automatic").avg("mpg", "torque").show()
 
-  carMileageDF.groupBy().avg("mpg","torque").show()
+  // Even though the following is possible, rather it is awkward. avg() is an aggregate function, so use `df.agg()`.
+  carMileageDF.groupBy().avg("mpg", "torque").show()
+
+  // Do the following instead of the previous line
 
   // import aggregate functions
-  import org.apache.spark.sql.functions.{avg,mean}
-  carMileageDF.agg(avg(carMileageDF("mpg")), mean(carMileageDF("torque")) ).show()
+  import org.apache.spark.sql.functions.{avg, mean}
+
+  carMileageDF.agg(avg(carMileageDF("mpg")), mean(carMileageDF("torque"))).show()
+  carMileageDF.groupBy("automatic").agg(avg(carMileageDF("mpg")), mean(carMileageDF("torque"))).show()
 }

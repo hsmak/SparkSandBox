@@ -1,9 +1,9 @@
-package org.hsmak.sqlFunctions
+package org.hsmak._foundations
 
 import org.apache.log4j.{Level, Logger}
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SaveMode, SparkSession}
 
-object CrossTabOpsOnTitanic extends App {
+object ReadWriteCars extends App {
 
   //turn off Logging
   Logger.getLogger("org").setLevel(Level.OFF)
@@ -24,7 +24,7 @@ object CrossTabOpsOnTitanic extends App {
   case class Product(ProductID: String, ProductName: String, UnitPrice: Double, UnitsInStock: Int, UnitsOnOrder: Int, ReorderLevel: Int, Discontinued: Int)
 
 
-  val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/titanic"
+  val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/car-data"
 
 
   /** ******************************************************
@@ -43,40 +43,33 @@ object CrossTabOpsOnTitanic extends App {
     * ******************************************************/
 
 
-  val titanicPassengersDF = spark.read
+  val carMileageDF = spark.read
     .option("header", "true")
     .option("inferSchema", "true")
-    .csv(s"$base_data_dir/titanic3_02.csv")
+    .csv(s"$base_data_dir/cars.csv")
 
 
-  println("titanicPassengersDF has " + titanicPassengersDF.count() + " rows")
-  titanicPassengersDF.show(5)
-  titanicPassengersDF.printSchema()
+  println("carMileageDF has " + carMileageDF.count() + " rows")
+  carMileageDF.show(5)
+  carMileageDF.printSchema()
 
 
-  val passengersQuery = titanicPassengersDF.select(
-    titanicPassengersDF("Pclass"),
-    titanicPassengersDF("Survived"),
-    titanicPassengersDF("Gender"),
-    titanicPassengersDF("Age"),
-    titanicPassengersDF("SibSp"),
-    titanicPassengersDF("Parch"),
-    titanicPassengersDF("Fare"))
+  /** ******************************************************
+    * ############ Writing DataFrames back #################
+    * ******************************************************/
 
-  passengersQuery.show(5)
-  passengersQuery.printSchema()
+  //Write DF back in CSV format
+  carMileageDF.write
+    .mode(SaveMode.Overwrite)
+    .option("header", true)
+    .csv(s"${base_data_dir}/out/cars-out-csv")
 
 
-  passengersQuery.groupBy("Gender").count().show()
-  passengersQuery.stat.crosstab("Survived", "Gender").show()
-  //
-  passengersQuery.stat.crosstab("Survived", "SibSp").show()
-  //
-  // passengers1.stat.crosstab("Survived","Age").show()
-  val ageDist = passengersQuery.select(
-    passengersQuery("Survived"),
-    (passengersQuery("age") - passengersQuery("age") % 10).cast("int").as("AgeBracket"))
+  //Write DF back in Parquet format
+  carMileageDF.write
+    .mode(SaveMode.Overwrite)
+    .option("header", true)
+    .partitionBy("year")
+    .parquet(s"${base_data_dir}/out/cars-out-pqt")
 
-  ageDist.show(3)
-  ageDist.stat.crosstab("Survived", "AgeBracket").show()
 }

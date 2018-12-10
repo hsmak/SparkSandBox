@@ -5,7 +5,7 @@ import java.io.StringReader
 import au.com.bytecode.opencsv.CSVReader
 import org.apache.spark.sql.SparkSession
 
-object AccumulatorRunner {
+object SharedStateWithAccumulator {
 
   def main(args: Array[String]) {
 
@@ -23,7 +23,7 @@ object AccumulatorRunner {
     //    val invalidLineCounter = sc.accumulator(0);
     //    val invalidNumericLineCounter = sc.accumulator(0);
 
-    val invalidLineCounter = sc.longAccumulator("invalidLineCounter");
+    val invalidLineCounter = sc.longAccumulator("invalidLineCounter")
     val invalidNumericLineCounter = sc.longAccumulator("invalidNumericLineCounter")
 
     val filePath = s"file://${System.getProperty("user.dir")}/_data/Line_of_numbers.csv"
