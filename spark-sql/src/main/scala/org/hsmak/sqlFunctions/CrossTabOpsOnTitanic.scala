@@ -68,15 +68,43 @@ object CrossTabOpsOnTitanic extends App {
 
 
   passengersQuery.groupBy("Gender").count().show()
+
+  //How many of each gender survived?
   passengersQuery.stat.crosstab("Survived", "Gender").show()
-  //
+
+  //Did passengers traveling with spouses/siblings have a better chance of survival?
   passengersQuery.stat.crosstab("Survived", "SibSp").show()
-  //
-  // passengers1.stat.crosstab("Survived","Age").show()
+
+  // Did age make any difference?
+  //passengersQuery.stat.crosstab("Survived","Age").show() // Create AgeBrackets/AgeRanges instead as in the following
+
+  /**
+    * AgeBracket:
+    * (age - age % 10): create an AgeBracket of 10
+    *
+    */
   val ageDist = passengersQuery.select(
     passengersQuery("Survived"),
     (passengersQuery("age") - passengersQuery("age") % 10).cast("int").as("AgeBracket"))
 
   ageDist.show(3)
   ageDist.stat.crosstab("Survived", "AgeBracket").show()
+
+
+  /** *******************************************
+    * ########## Using the $ Notation ###########
+    * *******************************************/
+
+  val sqlContext = spark.sqlContext
+  //import the $ notation
+  import sqlContext.implicits._
+  //  import spark.implicits._ // alternative to the previous line
+
+  val ageDist$ = passengersQuery.select(
+    $"Survived",
+    ($"age" - $"age" % 10).cast("int").as("AgeBracket"))
+
+  ageDist$.show(3)
+  ageDist$.stat.crosstab("Survived", "AgeBracket").show()
+
 }

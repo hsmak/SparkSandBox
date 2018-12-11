@@ -67,4 +67,19 @@ object AggregateOpsOnCars extends App {
 
   carMileageDF.agg(avg(carMileageDF("mpg")), mean(carMileageDF("torque"))).show()
   carMileageDF.groupBy("automatic").agg(avg(carMileageDF("mpg")), mean(carMileageDF("torque"))).show()
+
+
+  /** *******************************************
+    * ########## Using the $ Notation ###########
+    * *******************************************/
+
+  val sqlContext = spark.sqlContext
+  //import the $ notation
+  import sqlContext.implicits._
+//  import spark.implicits._ // alternative to the previous line
+
+  // $ is useful when an operation needd to be performed on the value of that column instead of the string value of the column name
+  carMileageDF.agg(avg($"mpg"), mean($"torque")).show()
+  carMileageDF.groupBy($"automatic").agg(avg($"mpg"), mean($"torque")).show()
+
 }

@@ -38,20 +38,37 @@ object ScientificOpsOnHypot extends App {
     .getOrCreate()
 
 
-  val aList: List[Int] = List(10, 100, 1000)
-  var aRDD = spark.sparkContext.parallelize(aList)
-  val sqlContext = spark.sqlContext
+  /** *****************************************************
+    * ############ Creating RDD from Collection ###########
+    * *****************************************************/
 
-  import sqlContext.implicits._
+
+  val aList: List[Int] = List(-1, 10, 100, 1000)
+  var aRDD = spark.sparkContext.parallelize(aList)
+
+  /**
+    * `import spark.implicits._` can replace the following two line.
+    * Note: you will have to call toDS() instead of createDataset() and some other nuances
+    */
+  val sqlContext = spark.sqlContext
+  import sqlContext.implicits._ //import RDD - DS implicit converters; and the $ notation
 
   val ds = spark.createDataset(aRDD)
+  //  val ds = aRDD.toDS // alternative to the previous line
   ds.show()
 
   import org.apache.spark.sql.functions.{log, log10, sqrt}
 
-  ds.select(ds("value"), log(ds("value")).as("ln")).show()
-  ds.select(ds("value"), log10(ds("value")).as("log10")).show()
-  ds.select(ds("value"), sqrt(ds("value")).as("sqrt")).show()
+  ds.select(ds("value"), log(ds("value")).as("ln")).show
+  ds.select(ds("value"), log10(ds("value")).as("log10")).show
+  ds.select(ds("value"), sqrt(ds("value")).as("sqrt")).show
+
+  //  import spark.implicits._ // $-notation is already imported from 'sqlContext' above
+
+  // or in one line and using the $ notation
+  ds.select($"value", log($"value").as("ln"), log10($"value").as("log10"), sqrt($"value").as("sqrt")).show
+
+
 
   /** ******************************************************
     * ############ Creating DataFrames from CSVs ###########
@@ -68,6 +85,10 @@ object ScientificOpsOnHypot extends App {
   hypotDF.show(5)
   hypotDF.printSchema()
 
-  import org.apache.spark.sql.functions.{hypot}
-  hypotDF.select(hypotDF("X"), hypotDF("Y"), hypot(hypotDF("X"), hypotDF("Y")).as("hypot")).show()
+  import org.apache.spark.sql.functions.hypot
+
+  /**
+    * From Trigonometry: Z^2 = X^2 + Y^2; where Z is the hypotenuse.
+    */
+  hypotDF.select($"X", $"Y", hypot($"X", $"Y").as("hypot")).show
 }
