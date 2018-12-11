@@ -3,7 +3,7 @@ package org.hsmak._foundations
 import java.io.StringReader
 
 import au.com.bytecode.opencsv.CSVReader
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SaveMode, SparkSession}
 
 /**
   * @author ${user.name}
@@ -23,20 +23,25 @@ object ReadWriteLineNumbers {
     val sc = spark.sparkContext
 
 
+    val base_data_dir = s"file://${System.getProperty("user.dir")}/_data"
+    val lonRDD = sc.textFile(s"${base_data_dir}/line-of-numbers.csv")
 
-    val filePath = s"file://${System.getProperty("user.dir")}/_data/Line_of_numbers.csv"
-    val inFile = sc.textFile(filePath)
-
-    val splitLines = inFile.map(line => {
+    val splitLinesRDD = lonRDD.map(line => {
       val reader = new CSVReader(new StringReader(line))
       reader.readNext()
     })
 
-    val numericData = splitLines.map(line => line.map(_.toDouble))
-    val summedData = numericData.map(row => row.sum)
+    val numericDataRDD = splitLinesRDD.map(line => line.map(_.toDouble))
+    val summedDataRDD = numericDataRDD.map(row => row.sum)
 
-    println(summedData.collect().mkString(","))
+    println(summedDataRDD.collect().mkString(","))
 
+    // Writing summation result into a CSV file
+    import spark.implicits._
+    summedDataRDD.toDF("Value")
+      .write
+      .mode(SaveMode.Overwrite)
+      .csv(s"${base_data_dir}/out-line-of-numbers")
     spark.stop()
   }
 

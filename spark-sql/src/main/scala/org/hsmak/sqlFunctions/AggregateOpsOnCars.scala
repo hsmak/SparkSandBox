@@ -8,22 +8,6 @@ object AggregateOpsOnCars extends App {
   //turn off Logging
   Logger.getLogger("org").setLevel(Level.OFF)
 
-
-  case class Employee(EmployeeID: String,
-                      LastName: String, FirstName: String, Title: String,
-                      BirthDate: String, HireDate: String,
-                      City: String, State: String, Zip: String, Country: String,
-                      ReportsTo: String)
-
-  case class Order(OrderID: String, CustomerID: String, EmployeeID: String,
-                   OrderDate: String, ShipCountry: String)
-
-  case class OrderDetails(OrderID: String, ProductID: String, UnitPrice: Double,
-                          Qty: Int, Discount: Double)
-
-  case class Product(ProductID: String, ProductName: String, UnitPrice: Double, UnitsInStock: Int, UnitsOnOrder: Int, ReorderLevel: Int, Discontinued: Int)
-
-
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/car-data"
 
 
@@ -50,6 +34,7 @@ object AggregateOpsOnCars extends App {
 
 
   println("carMileageDF has " + carMileageDF.count() + " rows")
+  carMileageDF.count()
   carMileageDF.show(5)
   carMileageDF.printSchema()
 
