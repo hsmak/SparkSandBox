@@ -24,7 +24,7 @@
 
         <scala.version>2.11.12</scala.version>
         <scala.compat.version>2.11</scala.compat.version>
-        <spec2.version>4.2.0</spec2.version>
+        <spec2.version>4.3.5</spec2.version>
 
         <spark.version>2.4.0</spark.version>
     </properties>
@@ -118,7 +118,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
+                <version>2.22.1</version>
                 <configuration>
                     <!-- Tests will be run with scalatest-maven-plugin instead -->
                     <skipTests>true</skipTests>
@@ -164,7 +164,8 @@
                                 <argument>local[*]</argument>
 
                                 <argument>--class</argument>
-                                <argument>${mainClass}</argument><!-- add an environment variable in each maven runner-->
+                                <argument>${mainClass}
+                                </argument><!-- add an environment variable in each maven runner-->
 
                                 <!-- uncomment to enable debug mode -->
                                 <!--<argument>&#45;&#45;conf</argument>-->
@@ -203,5 +204,5 @@
             </plugin>
         </plugins>
     </build>
-    
+
 </project>
