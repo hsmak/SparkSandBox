@@ -15,7 +15,8 @@ object LinearRegressionOnCars extends App {
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
-  val spark = SparkSession.builder()
+  val spark = SparkSession
+    .builder
     .master("local[*]")
     .appName("ML01")
     .getOrCreate()

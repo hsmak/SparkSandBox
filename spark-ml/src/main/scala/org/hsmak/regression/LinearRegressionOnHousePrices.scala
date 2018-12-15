@@ -24,7 +24,7 @@ object LinearRegressionOnHousePrices extends App {
   val df = spark.read
     .option("header", true)
     .option("inferSchema", true)
-    .csv("file:///home/hsmak/Development/git/spark-sandbox/_data/house_prices/train.csv")
+    .csv(s"file://${System.getProperty("user.dir")}/_data/house_prices/train.csv")
 
   import spark.implicits._
 
