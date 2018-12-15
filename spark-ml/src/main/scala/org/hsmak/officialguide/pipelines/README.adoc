@@ -1,0 +1,8 @@
+= Pipelines
+:toc:
+:toclevels: 3
+:sectnums: 3
+:sectnumlevels: 3
+:icons: font
+
+NOTE: Referenced from https://spark.apache.org/docs/latest/ml-pipeline.html[ml-pipeline]
