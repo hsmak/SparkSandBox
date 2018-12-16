@@ -62,6 +62,26 @@
             <!--<scope>provided</scope>-->
         </dependency>
 
+        <!--
+            * Add BLAS/LINPACK native libraries for faster run, and also get rid of the following warnings:
+                WARN BLAS: Failed to load implementation from: com.github.fommil.netlib.NativeSystemBLAS
+                WARN BLAS: Failed to load implementation from: com.github.fommil.netlib.NativeRefBLAS
+
+            * I also installed the following on my system (Ubuntu); not sure yet if it's related:
+                > sudo apt-get install libblas-dev liblapack-dev gfortran
+
+            * Links:
+                - https://spark.apache.org/docs/latest/ml-guide.html#dependencies
+                - https://github.com/aws-samples/emr-bootstrap-actions/issues/124
+                - https://askubuntu.com/questions/623578/installing-blas-and-lapack-packages
+                - https://github.com/fommil/netlib-java#linux
+        -->
+        <dependency>
+            <groupId>com.github.fommil.netlib</groupId>
+            <artifactId>all</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/au.com.bytecode/opencsv -->
         <dependency>
             <groupId>au.com.bytecode</groupId>
