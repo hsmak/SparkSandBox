@@ -3,7 +3,7 @@ package org.hsmak.regression
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.Transformer
 import org.apache.spark.ml.evaluation.RegressionEvaluator
-import org.apache.spark.ml.feature.{StandardScaler, StringIndexer, VectorSlicer}
+import org.apache.spark.ml.feature.{StandardScaler, StringIndexer, VectorAssembler, VectorSlicer}
 import org.apache.spark.ml.linalg.{DenseVector, Vectors}
 import org.apache.spark.ml.regression.LinearRegression
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField}
@@ -42,17 +42,7 @@ object LinearRegressionOnHousePrices extends App {
     */
 
   // Extract all columns except "Id" and the to-be-predicted one "SalePrice"
-  /* val scalarFields: Seq[String] = df.schema.fields.collect {
-     case StructField(name, IntegerType, _, _) if name != labelField && name != "Id" => name
-   }
-
-   val scalarData = df.map { row =>
-     //Tuple2
-     (Vectors.dense(scalarFields.map(name => row.getAs[Int](name).toDouble).toArray),
-       row.getInt(row.fieldIndex(labelField)))
-
-   }.toDF("features", "labels")*/
-
+  // Extract all fieldNames whose values are of Int
   val scalarFields: Seq[String] = df.schema.fields.collect {
     case StructField(name, IntegerType, _, _) if name != labelField && name != "Id" => name
   }
@@ -66,8 +56,17 @@ object LinearRegressionOnHousePrices extends App {
 
   scalarData.show
 
+  // ToDo - Beside the Assembler, use StringIndexer to categorize String valued columns
+  /*val inputCols: Array[String] = df.schema.fieldNames
+    .filterNot(_.equalsIgnoreCase("name"))
+    .filterNot(_.equalsIgnoreCase("id"))
+  val assembler = new VectorAssembler()
+    .setInputCols(inputCols)
+    .setOutputCol("features")
 
-  // this time we're retreiving StringTyped columns
+  assembler.transform(df).show(40)*/
+
+//  this time we're retrieving StringTyped columns
   val stringFields: Seq[String] = df.schema.fields.collect {
 
     case StructField(name, StringType, _, _) => name
@@ -75,7 +74,7 @@ object LinearRegressionOnHousePrices extends App {
   }
 
   /**
-    * Create a unique value/index for the categorial values such as 1StoryBuilding, 2StoryBuilding, etc
+    * Create a unique value/index for the categorical values such as 1StoryBuilding, 2StoryBuilding, etc
     */
   val dfWithCategories = stringFields.foldLeft(df) { (dfTemp, nxtCol) =>
     val indexer = new StringIndexer()
@@ -137,17 +136,6 @@ object LinearRegressionOnHousePrices extends App {
     */
 
 
-  /* val scalarFields: Seq[String] = df.schema.fields.collect{
-     case StructField(name, IntegerType, _, _) if name != labelField => name
-   }
-   val scalarData = df.map{ row =>
-     //Tuple2
-     (
-       Vectors.dense(scalarFields.map(name => row.getAs[Int](name).toDouble).toArray),
-       row.getInt(row.fieldIndex(labelField))
-     )
-   }.toDF("scalar_features", "labels")*/
-
   /**
     * Notice the "(1 until scalarFields.size)" is skipping the first index which the ID in the features table
     */
@@ -190,7 +178,7 @@ object LinearRegressionOnHousePrices extends App {
     .setRegParam(0.3)
 
   // Fit the Model
-  val lrModel = lr.fit(trainData)// ML Training and Fitting happens here!
+  val lrModel = lr.fit(trainData) // ML Training and Fitting happens here!
 
   // Evaluation
   val (trainLrPredictions, trainLrR2) = evaluate(trainData, lrModel)
