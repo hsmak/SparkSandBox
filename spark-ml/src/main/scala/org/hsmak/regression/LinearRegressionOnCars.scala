@@ -10,6 +10,8 @@ object LinearRegressionOnCars extends App {
 
   Logger.getLogger("org").setLevel(Level.OFF)
 
+  val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/car-data"
+
 
   /** ******************************************************
     * ############ Creating SparkSession ###########
@@ -21,8 +23,6 @@ object LinearRegressionOnCars extends App {
     .appName("ML01")
     .getOrCreate()
 
-
-  val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/car-data"
 
   /** ******************************************************
     * ############ Creating DataFrames from CSVs ###########
@@ -48,24 +48,32 @@ object LinearRegressionOnCars extends App {
     * ******************************************/
 
 
-  //ToDo - Check Zeppelin notebooks
-
-  // Transformation to a labeled data that Linear Regression Can use
-  val cars1 = carMileageDF.na.drop()
-  val assembler = new VectorAssembler() //ToDo - to output the features into a vector?
-  assembler.setInputCols(Array("displacement", "hp", "torque", "CRatio", "RARatio", "CarbBarrells", "NoOfSpeed", "length", "width", "weight", "automatic"))
-  assembler.setOutputCol("features")
-  //ToDo - vectors of the values of all columns in each row? hence feature values.
-  val cars2 = assembler.transform(cars1) //ToDo - transform into the new DataFrame that has the features column
-  cars2.show(40)
-
   /** ******************************************
-    * ############ Split into training & test ###########
+    * ########## Feature Transformer ###########
     * ******************************************/
 
+  /**
+    * SparkException: Encountered null while assembling a row with handleInvalid = "keep".
+    * Consider removing nulls from dataset or using handleInvalid = "keep" or "skip".
+    *
+    */
+  val carsNoNullDF = carMileageDF.na.drop() // Returns a new `DataFrame` that drops rows containing any null or NaN values.
 
-  val train = cars2.filter(cars1("weight") <= 4000)
-  val test = cars2.filter(cars1("weight") > 4000)
+  //A feature transformer that merges multiple columns into a vector column.
+  val assembler = new VectorAssembler()
+  assembler.setInputCols(Array("displacement", "hp", "torque", "CRatio", "RARatio", "CarbBarrells", "NoOfSpeed", "length", "width", "weight", "automatic"))
+  assembler.setOutputCol("features")// merges multiple columns into a vector column.
+
+  val carsExtractedFeatures = assembler.transform(carsNoNullDF)
+  carsExtractedFeatures.show(40)
+
+  /** *************************************************************
+    * ############ Data Splitting: Training & Test Sets ###########
+    * *************************************************************/
+
+
+  val train = carsExtractedFeatures.filter(carsNoNullDF("weight") <= 4000)
+  val test = carsExtractedFeatures.filter(carsNoNullDF("weight") > 4000)
   test.show()
 
   println("Train = " + train.count() + " Test = " + test.count())

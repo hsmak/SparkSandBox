@@ -7,7 +7,7 @@ import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
 import org.apache.spark.ml.{Pipeline, PipelineModel}
 import org.apache.spark.sql.{Row, SparkSession}
 
-object Pipeline extends App {
+object MLPipelines extends App {
 
   Logger.getLogger("org").setLevel(Level.OFF)
 
