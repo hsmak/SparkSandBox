@@ -63,7 +63,7 @@ object LinearRegressionOnCars extends App {
   val assembler = new VectorAssembler()
   //ToDo - This is inefficient in case there are thousands of columns
   assembler.setInputCols(Array("displacement", "hp", "torque", "CRatio", "RARatio", "CarbBarrells", "NoOfSpeed", "length", "width", "weight", "automatic"))
-  assembler.setOutputCol("features")// merges multiple columns into a vector column.
+  assembler.setOutputCol("features") // merges multiple columns into a vector column; i.e. extracting features
 
   val carsExtractedFeatures = assembler.transform(carsNoNullDF)
   carsExtractedFeatures.show(40)
@@ -78,18 +78,22 @@ object LinearRegressionOnCars extends App {
   test.show()
 
   println("Train = " + train.count() + " Test = " + test.count())
+
   val lr = new LinearRegression()
-  lr.setMaxIter(100)
-  lr.setRegParam(0.3)
-  lr.setElasticNetParam(0.8)
-  lr.setLabelCol("mpg")
+    .setMaxIter(100)
+    .setRegParam(0.3)
+    .setElasticNetParam(0.8)
+    .setLabelCol("mpg")
 
   /** ******************************************
     * ############ Training Data ###########
     * ******************************************/
 
   val lrTrained = lr.fit(train) // ToDo - most of the time-consuming work is happening here
-
+  /**
+    * Coefficients = Theta values?
+    * Intercept = mpg value when others features are zero?
+    */
   println(s"Coefficients: ${lrTrained.coefficients} Intercept: ${lrTrained.intercept}")
 
   val lrTrainedSummary = lrTrained.summary

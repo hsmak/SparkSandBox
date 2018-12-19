@@ -206,12 +206,12 @@ object LinearRegressionOnHousePrices extends App {
   val (trainLrPredictions, trainLrR2) = evaluate(trainData, lrModel)
   val (testLrPredictions, testLrR2) = evaluate(testData, lrModel)
 
-  def evaluate(df: DataFrame, model: Transformer): (DataFrame, Double) = {
+  def evaluate(df: DataFrame, lrModel: Transformer): (DataFrame, Double) = {
     val evaluator = new RegressionEvaluator()
       .setLabelCol(labelField)
       .setPredictionCol("prediction")
-      .setMetricName("r2")
-    val predictions = model.transform(df)
+      .setMetricName("r2") // R-Squared
+    val predictions = lrModel.transform(df)
     val r2 = evaluator.evaluate(predictions)
 
     (predictions, r2)
