@@ -3,7 +3,7 @@ package org.hsmak.regression
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.Transformer
 import org.apache.spark.ml.evaluation.RegressionEvaluator
-import org.apache.spark.ml.feature.{StandardScaler, StringIndexer, VectorAssembler, VectorSlicer}
+import org.apache.spark.ml.feature.{StandardScaler, StringIndexer, VectorSlicer}
 import org.apache.spark.ml.linalg.{DenseVector, Vectors}
 import org.apache.spark.ml.regression.LinearRegression
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField}
@@ -33,12 +33,12 @@ object LinearRegressionOnHousePrices extends App {
   //Store the target column in a val <- the column whose value to be predicted
   val labelField = "SalePrice"
 
-  /**
-    * SparkMLlib - Machine Learning: Feature Transformation
-    */
+  /** **********************************************
+    * ########## Feature Transformation ############
+    * **********************************************/
 
   /**
-    * Categorical features transformation - Transform from String to Numerical/Scalalr
+    * Categorical features transformation - Transform from String to Numerical/Scalar
     */
 
   // Extract all columns except "Id" and the to-be-predicted one "SalePrice"
@@ -52,7 +52,7 @@ object LinearRegressionOnHousePrices extends App {
       Vectors.dense(scalarFields.map(name => row.getAs[Int](name).toDouble).toArray),
       row.getInt(row.fieldIndex(labelField))
     )
-  }.toDF("scalar_features", "labels")
+  }.toDF("scalar_features", labelField)
 
   scalarData.show
 
@@ -66,7 +66,7 @@ object LinearRegressionOnHousePrices extends App {
 
   assembler.transform(df).show(40)*/
 
-//  this time we're retrieving StringTyped columns
+  //  Retrieving the StringTyped columns
   val stringFields: Seq[String] = df.schema.fields.collect {
 
     case StructField(name, StringType, _, _) => name
@@ -74,39 +74,50 @@ object LinearRegressionOnHousePrices extends App {
   }
 
   /**
+    * Transforming all categorical columns using StringIndexer
     * Create a unique value/index for the categorical values such as 1StoryBuilding, 2StoryBuilding, etc
     */
-  val dfWithCategories = stringFields.foldLeft(df) { (dfTemp, nxtCol) =>
-    val indexer = new StringIndexer()
+  val categoricalDF = stringFields.foldLeft(df) { (dfAcc, nxtCol) =>
+    val indexer = new StringIndexer() // StringIndexer Transformer
       .setInputCol(nxtCol)
       .setOutputCol(s"${nxtCol}_id")
 
-    indexer.fit(dfTemp).transform(dfTemp)
+    indexer.fit(dfAcc).transform(dfAcc)
   }
+  
+  //Test categorical columns with "HouseStyle"
+  val House_Style_SQL = categoricalDF.select("HouseStyle", "HouseStyle_id").distinct()
+  House_Style_SQL.show
 
-  //Test with "HouseStyle"
-  val resultsAfterTrans = dfWithCategories.select("HouseStyle", "HouseStyle_id").distinct()
-  resultsAfterTrans.show
 
-
-  val data = dfWithCategories.map { row =>
+  val scalar_categorical_ds = categoricalDF.map { row =>
     //Tuple3
     (
       //ScalaFields
-      Vectors.dense(scalarFields.map(name => row.getAs[Int](name).toDouble).toArray),
-      //StringFields which was transformed into Scalar ones
+      Vectors.dense(scalarFields.map(name => row.getAs[Int](name).toDouble).toArray), //Vectors.dense() accept only Double
+      //StringFields which were transformed into Scalar ones
       Vectors.dense(stringFields.map(name => row.getAs[Double](s"${name}_id").toDouble).toArray),
+      //
       row.getInt(row.fieldIndex(labelField))
 
     )
 
-  }.toDF("features_scalar", "features_categorical", "label") // Renaming _.1, _.2, _.3, respectively
+  }
 
-  data.show
+  val scalar_categorical_df = scalar_categorical_ds.toDF("features_scalar", "features_categorical", labelField) // Renaming _.1, _.2, _.3, respectively
+  scalar_categorical_df.show
+
+
+  /** *****************************************************
+    * ########## Feature Normalization/Scaling ############
+    * *****************************************************/
+
 
   /**
     * Scaling Scalar Feature <- Normalization??
-    * Via Standard Deviation & Mean <- Review the material from @ StanfordUnversity
+    * Via Standard Deviation & Mean <- Review the material from @ StanfordUniversity
+    *
+    * Observation: Categorical values need not be scaled because they're evenly spread out?
     */
 
   val stdScaler = new StandardScaler()
@@ -115,80 +126,108 @@ object LinearRegressionOnHousePrices extends App {
     .setWithStd(true)
     .setWithMean(true)
 
-  val data_scaled = stdScaler.fit(data).transform(data)
+  val scaledDataDF = stdScaler.fit(scalar_categorical_df).transform(scalar_categorical_df)
+  scaledDataDF.show
 
   /**
     * Combining Data: Categorical + Scalar
     */
 
-  val dataCombined = data_scaled.map { row =>
+  val dataCombinedDS = scaledDataDF.map { row =>
 
-    val combinedFeatures = Vectors.dense(row.getAs[DenseVector]("features_scalar_scaled").values ++
-      row.getAs[DenseVector]("features_categorical").values)
+    //concatenate two dense vectors
+    val combinedFeatures = Vectors.dense(
+      row.getAs[DenseVector]("features_scalar_scaled").values ++
+        row.getAs[DenseVector]("features_categorical").values)
 
-    (combinedFeatures, row.getAs[Int]("label")) //Returning Tuple2
+    (combinedFeatures, row.getAs[Int](labelField)) //Returning Tuple2
 
-  }.toDF("features", "label")
-  dataCombined.show
+  }
+  val dataCombinedDF = dataCombinedDS.toDF("features", labelField)
+  dataCombinedDF.show
+
+
+  /** ***************************************************
+    * ########## SparkML - Feature Selectors ############
+    * ***************************************************/
 
   /**
-    * Feature Selectors
-    */
-
-
-  /**
+    * ToDo - Not needed here! Place this in another src code
     * Notice the "(1 until scalarFields.size)" is skipping the first index which the ID in the features table
     */
-  val slicer = new VectorSlicer()
+  /*val slicer = new VectorSlicer() // This is a Selector
     .setInputCol("scalar_features")
     .setOutputCol("features")
     .setIndices((1 until scalarFields.size).toArray)
 
   val output = slicer.transform(scalarData)
 
-  output.show
+  output.show*/
 
+
+  /** *************************************************************
+    * ########## Data Splitting : Training & Test Sets ############
+    * *************************************************************/
 
   /**
     * Modeling and Evaluation - Common Logic
     */
 
   // extract trainData & testData using Extractors
-  val Array(trainData, testData) = dataCombined.randomSplit(Array(0.7, 0.3))
+  val Array(trainData, testData) = dataCombinedDF.randomSplit(Array(0.7, 0.3)) // of ratio 70:30
+  trainData.show
+  testData.show
 
-  def evaluate(ds: DataFrame, model: Transformer): (DataFrame, Double) = {
+
+  /** *****************************************
+    * ########## Linear Regression ############
+    * *****************************************/
+
+
+  // Instantiate the LinearRegression instance
+  val lr = new LinearRegression()
+    .setLabelCol(labelField)
+    .setMaxIter(1000)
+    .setRegParam(0.3) // ToDo - is this the LearningRate/StepSize? Theta?
+
+
+  /** *******************************************
+    * ########## Fit/Train the Model ############
+    * *******************************************/
+
+  // Fit the Model
+  val lrModel = lr.fit(trainData) // ML Training and Fitting happens here!
+
+  /** *******************************************
+    * ########## Evaluating the Model ###########
+    * *******************************************/
+
+  // Evaluation
+  val (trainLrPredictions, trainLrR2) = evaluate(trainData, lrModel)
+  val (testLrPredictions, testLrR2) = evaluate(testData, lrModel)
+
+  def evaluate(df: DataFrame, model: Transformer): (DataFrame, Double) = {
     val evaluator = new RegressionEvaluator()
-      .setLabelCol("label")
+      .setLabelCol(labelField)
       .setPredictionCol("prediction")
       .setMetricName("r2")
-    val predictions = model.transform(ds)
+    val predictions = model.transform(df)
     val r2 = evaluator.evaluate(predictions)
 
     (predictions, r2)
 
   }
 
-  /**
-    * Linear Regression
-    */
 
-  // Instantiate the LinearRegression instance
-  val lr = new LinearRegression()
-    .setMaxIter(1000)
-    .setRegParam(0.3)
-
-  // Fit the Model
-  val lrModel = lr.fit(trainData) // ML Training and Fitting happens here!
-
-  // Evaluation
-  val (trainLrPredictions, trainLrR2) = evaluate(trainData, lrModel)
-  val (testLrPredictions, testLrR2) = evaluate(testData, lrModel)
+  /** **********************************************************
+    * ########## Compare Predicted vs Actual Values ############
+    * **********************************************************/
 
   // Output
   println(s"r2 on train data: $trainLrR2")
   println(s"r2 on test data: $testLrR2")
 
-  val tableOutput = testLrPredictions.select($"prediction", $"label").show(10)
+  val tableOutput = testLrPredictions.select($"prediction", $"${labelField}").show(10)
 
   // z.show(tableOutput)
 }

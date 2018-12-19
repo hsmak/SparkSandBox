@@ -61,6 +61,7 @@ object LinearRegressionOnCars extends App {
 
   //A feature transformer that merges multiple columns into a vector column.
   val assembler = new VectorAssembler()
+  //ToDo - This is inefficient in case there are thousands of columns
   assembler.setInputCols(Array("displacement", "hp", "torque", "CRatio", "RARatio", "CarbBarrells", "NoOfSpeed", "length", "width", "weight", "automatic"))
   assembler.setOutputCol("features")// merges multiple columns into a vector column.
 

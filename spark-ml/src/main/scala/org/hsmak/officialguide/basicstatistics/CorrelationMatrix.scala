@@ -1,4 +1,4 @@
-package org.hsmak.officialguide.basic_statistics
+package org.hsmak.officialguide.basicstatistics
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.linalg.{Matrix, Vectors}
