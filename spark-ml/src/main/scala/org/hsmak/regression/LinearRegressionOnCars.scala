@@ -60,10 +60,10 @@ object LinearRegressionOnCars extends App {
   val carsNoNullDF = carMileageDF.na.drop() // Returns a new `DataFrame` that drops rows containing any null or NaN values.
 
   //A feature transformer that merges multiple columns into a vector column.
-  val assembler = new VectorAssembler()
   //ToDo - This is inefficient in case there are thousands of columns
-  assembler.setInputCols(Array("displacement", "hp", "torque", "CRatio", "RARatio", "CarbBarrells", "NoOfSpeed", "length", "width", "weight", "automatic"))
-  assembler.setOutputCol("features") // merges multiple columns into a vector column; i.e. extracting features
+  val assembler = new VectorAssembler()
+    .setInputCols(Array("displacement", "hp", "torque", "CRatio", "RARatio", "CarbBarrells", "NoOfSpeed", "length", "width", "weight", "automatic"))
+    .setOutputCol("features") // merges multiple columns into a vector column; i.e. extracting features
 
   val carsExtractedFeatures = assembler.transform(carsNoNullDF)
   carsExtractedFeatures.show(40)
@@ -79,6 +79,10 @@ object LinearRegressionOnCars extends App {
 
   println("Train = " + train.count() + " Test = " + test.count())
 
+  /** *****************************************
+    * ########## Linear Regression ############
+    * *****************************************/
+
   val lr = new LinearRegression()
     .setMaxIter(100)
     .setRegParam(0.3)
@@ -89,7 +93,8 @@ object LinearRegressionOnCars extends App {
     * ############ Training Data ###########
     * ******************************************/
 
-  val lrTrained = lr.fit(train) // ToDo - most of the time-consuming work is happening here
+  val lrTrained = lr.fit(train) // Most of the time-consuming work is happening here
+
   /**
     * Coefficients = Theta values?
     * Intercept = mpg value when others features are zero?
@@ -104,9 +109,9 @@ object LinearRegressionOnCars extends App {
   println(s"RMSE: ${lrTrainedSummary.rootMeanSquaredError}")
   println(s"r2: ${lrTrainedSummary.r2}")
 
-  /** ******************************************
+  /** ************************************************
     * ############ Prediction & Evaluating ###########
-    * ******************************************/
+    * ************************************************/
 
   // Now let us use the model to predict our test set
   val predictions = lrTrained.transform(test)
