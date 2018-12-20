@@ -20,7 +20,7 @@ object LinearRegressionOnCars extends App {
   val spark = SparkSession
     .builder
     .master("local[*]")
-    .appName("ML01")
+    .appName("LinearRegressionOnCars")
     .getOrCreate()
 
 

@@ -17,7 +17,7 @@ object LinearRegressionOnHousePrices extends App {
   val spark = SparkSession
     .builder
     .master("local[*]")
-    .appName("House Prices'")
+    .appName("LinearRegressionOnHousePrices'")
     .getOrCreate()
 
 

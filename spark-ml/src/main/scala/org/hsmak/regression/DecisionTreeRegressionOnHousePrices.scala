@@ -17,7 +17,7 @@ object DecisionTreeRegressionOnHousePrices extends App {
   val spark = SparkSession
     .builder
     .master("local[*]")
-    .appName("House Prices'")
+    .appName("DecisionTreeRegressionOnHousePrices'")
     .getOrCreate()
 
 

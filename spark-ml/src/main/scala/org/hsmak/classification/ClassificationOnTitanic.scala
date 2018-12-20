@@ -1,0 +1,118 @@
+package org.hsmak.classification
+
+import org.apache.log4j.{Level, Logger}
+import org.apache.spark.ml.classification.DecisionTreeClassifier
+import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
+import org.apache.spark.ml.feature.{StringIndexer, VectorAssembler}
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types.DoubleType
+
+object ClassificationOnTitanic extends App {
+
+  Logger.getLogger("org").setLevel(Level.OFF)
+
+  val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/titanic"
+
+
+  /** ******************************************************
+    * ############ Creating SparkSession ###########
+    * ******************************************************/
+
+  val spark = SparkSession
+    .builder
+    .master("local[*]")
+    .appName("ClassificationOnTitanic")
+    .getOrCreate()
+
+
+  /** ******************************************************
+    * ############ Creating DataFrames from CSVs ###########
+    * ******************************************************/
+
+
+  val titanicPassengersDF = spark.read
+    .option("header", "true")
+    .option("inferSchema", "true")
+    .csv(s"$base_data_dir/titanic3_02.csv")
+
+
+  println("titanicPassengersDF has " + titanicPassengersDF.count() + " rows")
+  titanicPassengersDF.show(5)
+  titanicPassengersDF.printSchema()
+
+
+  import spark.implicits._
+
+  val passengers = titanicPassengersDF.select(
+    $"Pclass",
+    $"Survived".cast(DoubleType).as("Survived"),
+    $"Gender",
+    $"Age",
+    $"SibSp",
+    $"Parch",
+    $"Fare")
+  passengers.show(5)
+
+  // VectorAssembler does not support the StringType type. So convert Gender to numeric
+
+  val indexer = new StringIndexer()
+    .setInputCol("Gender")
+    .setOutputCol("GenderCat")
+  val passengersWithCategoricalGender = indexer.fit(passengers).transform(passengers)
+  passengersWithCategoricalGender.show(5)
+
+
+  val passengersNoNull = passengersWithCategoricalGender.na.drop()
+  println(
+    s"""Orig = ${passengersWithCategoricalGender.count()}
+       |Final = ${passengersNoNull.count()}
+       |Dropped = ${(passengersWithCategoricalGender.count() - passengersNoNull.count())}""".stripMargin)
+
+
+  // Extract Features
+
+  val assembler = new VectorAssembler()
+  assembler.setInputCols(Array("Pclass", "GenderCat", "Age", "SibSp", "Parch", "Fare"))
+  assembler.setOutputCol("features")
+  val passengersWithFeatures = assembler.transform(passengersNoNull)
+  passengersWithFeatures.show(5)
+
+  // Split Data
+
+  val Array(train, test) = passengersWithFeatures.randomSplit(Array(0.9, 0.1))
+  println(
+    s"""Train = ${train.count()}
+       |Test = ${test.count()}""".stripMargin)
+
+  // Train a DecisionTree model.
+  val dTClassifier = new DecisionTreeClassifier()
+  dTClassifier.setLabelCol("Survived")
+  dTClassifier.setImpurity("gini") // could be "entropy"
+  dTClassifier.setMaxBins(32)
+  dTClassifier.setMaxDepth(5)
+
+  val mdlTree = dTClassifier.fit(train) // the time-consuming operation
+
+  println(
+    s"""Begin...
+       |The tree has ${mdlTree.numNodes} nodes.
+       |${mdlTree.toDebugString}
+       |${mdlTree.toString}
+       |${mdlTree.featureImportances}
+       |End...""".stripMargin)
+
+  // predict on TestSet and calculate accuracy
+
+  val predictions = mdlTree.transform(test)
+  predictions.show(5)
+
+  //Evaluating the Model
+
+  val evaluator = new MulticlassClassificationEvaluator()
+  evaluator.setLabelCol("Survived")
+  evaluator.setMetricName("accuracy") // could be f1, "weightedPrecision" or "weightedRecall"
+
+  val accuracy = evaluator.evaluate(predictions)
+  println("Test Accuracy = %.2f%%".format(accuracy * 100))
+
+}

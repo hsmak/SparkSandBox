@@ -18,7 +18,7 @@ object DataWranglingOnNW extends App {
   val spark = SparkSession
     .builder
     .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
-    .appName("DatasetRunner")
+    .appName("DataWranglingOnNW")
     .getOrCreate()
 
 
