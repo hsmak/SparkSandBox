@@ -6,6 +6,12 @@ import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.regression.LinearRegression
 import org.apache.spark.sql.SparkSession
 
+/**
+  * ToDo:
+  *   - How to perform polynomial regression?
+  *   - How to find whether a feature has a quadratic effect?
+  *   - how to find correlation between different features, their quadratic or more effect, etc?
+  */
 object LinearRegressionOnCars extends App {
 
   Logger.getLogger("org").setLevel(Level.OFF)
@@ -58,6 +64,11 @@ object LinearRegressionOnCars extends App {
     *
     */
   val carsNoNullDF = carMileageDF.na.drop() // Returns a new `DataFrame` that drops rows containing any null or NaN values.
+
+  println(
+    s"""Orig = ${carMileageDF.count()}
+       |Final = ${carsNoNullDF.count()}
+       |Dropped = ${(carMileageDF.count() - carsNoNullDF.count())}""".stripMargin)
 
   //A feature transformer that merges multiple columns into a vector column.
   //ToDo - This is inefficient in case there are thousands of columns

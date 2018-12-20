@@ -46,7 +46,7 @@ object ClassificationOnTitanic extends App {
   val passengers = titanicPassengersDF.select(
     $"Pclass",
     $"Survived".cast(DoubleType).as("Survived"),
-    $"Gender",
+    $"Gender", // categorical data
     $"Age",
     $"SibSp",
     $"Parch",
@@ -58,10 +58,14 @@ object ClassificationOnTitanic extends App {
   val indexer = new StringIndexer()
     .setInputCol("Gender")
     .setOutputCol("GenderCat")
+
+  //Fit the Categorical gender data into the DF
   val passengersWithCategoricalGender = indexer.fit(passengers).transform(passengers)
+
   passengersWithCategoricalGender.show(5)
 
 
+  //Remove rows that have null values
   val passengersNoNull = passengersWithCategoricalGender.na.drop()
   println(
     s"""Orig = ${passengersWithCategoricalGender.count()}
@@ -69,29 +73,33 @@ object ClassificationOnTitanic extends App {
        |Dropped = ${(passengersWithCategoricalGender.count() - passengersNoNull.count())}""".stripMargin)
 
 
-  // Extract Features
+  // Extract Features using VectorAssembler
 
   val assembler = new VectorAssembler()
-  assembler.setInputCols(Array("Pclass", "GenderCat", "Age", "SibSp", "Parch", "Fare"))
-  assembler.setOutputCol("features")
+    .setInputCols(Array("Pclass", "GenderCat", "Age", "SibSp", "Parch", "Fare"))
+    .setOutputCol("features")
+
   val passengersWithFeatures = assembler.transform(passengersNoNull)
+
   passengersWithFeatures.show(5)
 
-  // Split Data
 
-  val Array(train, test) = passengersWithFeatures.randomSplit(Array(0.9, 0.1))
+  // Split Data using df.randomSplit()
+
+  val Array(trainData, testData) = passengersWithFeatures.randomSplit(Array(0.9, 0.1))
   println(
-    s"""Train = ${train.count()}
-       |Test = ${test.count()}""".stripMargin)
+    s"""Train = ${trainData.count()}
+       |Test = ${testData.count()}""".stripMargin)
 
   // Train a DecisionTree model.
-  val dTClassifier = new DecisionTreeClassifier()
-  dTClassifier.setLabelCol("Survived")
-  dTClassifier.setImpurity("gini") // could be "entropy"
-  dTClassifier.setMaxBins(32)
-  dTClassifier.setMaxDepth(5)
 
-  val mdlTree = dTClassifier.fit(train) // the time-consuming operation
+  val dTClassifier = new DecisionTreeClassifier()
+    .setLabelCol("Survived")
+    .setImpurity("gini") // could be "entropy"
+    .setMaxBins(32)
+    .setMaxDepth(5)
+
+  val mdlTree = dTClassifier.fit(trainData) // the time-consuming operation
 
   println(
     s"""Begin...
@@ -103,14 +111,14 @@ object ClassificationOnTitanic extends App {
 
   // predict on TestSet and calculate accuracy
 
-  val predictions = mdlTree.transform(test)
+  val predictions = mdlTree.transform(testData)
   predictions.show(5)
 
-  //Evaluating the Model
+  // Evaluating the Model
 
   val evaluator = new MulticlassClassificationEvaluator()
-  evaluator.setLabelCol("Survived")
-  evaluator.setMetricName("accuracy") // could be f1, "weightedPrecision" or "weightedRecall"
+    .setLabelCol("Survived")
+    .setMetricName("accuracy") // could be f1, "weightedPrecision" or "weightedRecall" TODO - find all possible metrics
 
   val accuracy = evaluator.evaluate(predictions)
   println("Test Accuracy = %.2f%%".format(accuracy * 100))
