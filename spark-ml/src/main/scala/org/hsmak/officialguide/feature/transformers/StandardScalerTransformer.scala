@@ -20,6 +20,8 @@ object StandardScalerTransformer extends App {
     .format("libsvm")
     .load(s"${base_data_dir}/sample_libsvm_data.txt")
 
+  dataFrame.show
+
   val scaler = new StandardScaler()
     .setInputCol("features")
     .setOutputCol("scaledFeatures")
@@ -30,7 +32,7 @@ object StandardScalerTransformer extends App {
   val scalerModel = scaler.fit(dataFrame)
 
   // Normalize each feature to have unit standard deviation.
-  val scaledData = scalerModel.transform(dataFrame)
-  scaledData.show()
+  val dfWithScaledFeatures = scalerModel.transform(dataFrame)
+  dfWithScaledFeatures.show()
 
 }
