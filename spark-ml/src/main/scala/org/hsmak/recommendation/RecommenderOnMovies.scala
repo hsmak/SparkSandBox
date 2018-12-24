@@ -69,12 +69,12 @@ object RecommenderOnMovies extends App {
 
   println("Got %d ratings from %d users on %d movies.".format(ratings.count(), users.count(), movies.count()))
 
-  // splitting data
+  // Split data
 
   val Array(train, test) = ratings.randomSplit(Array(0.8, 0.2))
   println("Train = " + train.count() + " Test = " + test.count())
 
-  // instantiate the ALS model
+  // Train the ALS model
 
   val algALS = new ALS()
     .setUserCol("UserID") // defaulting to user

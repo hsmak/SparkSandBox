@@ -1,4 +1,4 @@
-package org.hsmak.officialguide.clustering
+package org.hsmak.clustering
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.clustering.KMeans
@@ -29,6 +29,7 @@ object KMeanClusteringOnXYPlot extends App {
     * ******************************************************/
 
 
+  //Load the Data
   val xyPlotDF = spark.read
     .option("header", "true")
     .option("inferSchema", "true")
@@ -39,6 +40,7 @@ object KMeanClusteringOnXYPlot extends App {
   xyPlotDF.show(5)
   xyPlotDF.printSchema()
 
+  //Extract features
   val assembler = new VectorAssembler()
     .setInputCols(Array("X", "Y"))
     .setOutputCol("features")
@@ -46,8 +48,7 @@ object KMeanClusteringOnXYPlot extends App {
   val xyPlotWithFeatures = assembler.transform(xyPlotDF)
   xyPlotWithFeatures.show
 
-  // Create the Kmeans model
-
+  // Train the K-Means model
   var algKMeans = new KMeans()
     .setK(2)
   var mdlKMeans = algKMeans.fit(xyPlotWithFeatures)
@@ -64,15 +65,16 @@ object KMeanClusteringOnXYPlot extends App {
   ////////////////////////////////
 
 
+  //Predict using the Model
   val predictions = mdlKMeans.transform(xyPlotWithFeatures)
   predictions.show
 
   val evaluator = new ClusteringEvaluator()
   val silhouette = evaluator.evaluate(predictions)
-  println(s"\n\n\nSilhouette with squared euclidean distance = $silhouette")
+  println(s"Silhouette with squared euclidean distance = $silhouette")
 
   // Shows the result.
-  println("Cluster Centers: ")
+  println("Cluster Centers/Centroids: ")
   mdlKMeans.clusterCenters.foreach(println)
 
 }

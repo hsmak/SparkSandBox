@@ -1,4 +1,4 @@
-package org.hsmak.clustering
+package org.hsmak.officialguide.clustering
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.clustering.KMeans
@@ -23,18 +23,20 @@ object KMeanClustering extends App {
     .getOrCreate()
 
 
-  // Loads data.
-  val dataset = spark.read.format("libsvm")
+  // Load the data.
+  val kmeansDF = spark
+    .read
+    .format("libsvm")
     .load(s"${base_data_dir}/sample_kmeans_data.txt")
 
-  // Trains a k-means model.
-  val kmeans = new KMeans()
+  // Train a k-means model.
+  val kmAlg = new KMeans()
     .setK(2)
     .setSeed(1L)
-  val model = kmeans.fit(dataset)
+  val kmModel = kmAlg.fit(kmeansDF)
 
   // Make predictions
-  val predictions = model.transform(dataset)
+  val predictions = kmModel.transform(kmeansDF)
   predictions.show
 
   // Evaluate clustering by computing Silhouette score
@@ -44,6 +46,6 @@ object KMeanClustering extends App {
 
   // Shows the result.
   println("Cluster Centers: ")
-  model.clusterCenters.foreach(println)
+  kmModel.clusterCenters.foreach(println)
 
 }
