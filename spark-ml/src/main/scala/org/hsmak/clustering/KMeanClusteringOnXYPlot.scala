@@ -4,7 +4,7 @@ import org.apache.log4j.{Level, Logger}
 import org.apache.spark.ml.clustering.KMeans
 import org.apache.spark.ml.evaluation.ClusteringEvaluator
 import org.apache.spark.ml.feature.VectorAssembler
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SaveMode, SparkSession}
 
 object KMeanClusteringOnXYPlot extends App {
 
@@ -22,6 +22,8 @@ object KMeanClusteringOnXYPlot extends App {
     .master("local[*]")
     .appName("KMeanClusteringOnXYPlot")
     .getOrCreate()
+
+  import spark.implicits._
 
 
   /** ******************************************************
@@ -51,6 +53,7 @@ object KMeanClusteringOnXYPlot extends App {
   // Train the K-Means model
   var algKMeans = new KMeans()
     .setK(2)
+  // set it for 2 clusters. You may experiment with 3 or 4 clusters.
   var mdlKMeans = algKMeans.fit(xyPlotWithFeatures)
 
   // Print the summary.
@@ -64,13 +67,18 @@ object KMeanClusteringOnXYPlot extends App {
   //  println(s"Within Set Sum of Squared Errors (K=2) = %.3f".format(WSSSE))
   ////////////////////////////////
 
-
   //Predict using the Model
-  val predictions = mdlKMeans.transform(xyPlotWithFeatures)
-  predictions.show
+  val predict2K = mdlKMeans.transform(xyPlotWithFeatures)
+  predict2K.show
+
+  predict2K.select($"X", $"Y", $"prediction")
+    .write
+    .mode(SaveMode.Overwrite)
+    .option("header", true)
+    .csv(s"${base_data_dir}/k-means-out/cluster-2K.csv")
 
   val evaluator = new ClusteringEvaluator()
-  val silhouette = evaluator.evaluate(predictions)
+  val silhouette = evaluator.evaluate(predict2K)
   println(s"Silhouette with squared euclidean distance = $silhouette")
 
   // Shows the result.

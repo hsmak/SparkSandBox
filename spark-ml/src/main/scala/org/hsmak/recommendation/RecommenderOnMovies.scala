@@ -92,7 +92,7 @@ object RecommenderOnMovies extends App {
   predictions.printSchema()
 
   val pred = predictions.na.drop()
-  println("Orig = " + predictions.count() + " Final = " + pred.count() + " Dropped = " + (predictions.count() - pred.count()))
+  println(s"Orig = ${predictions.count()} Final = ${pred.count()} Dropped = ${(predictions.count() - pred.count())}")
 
   // Calculate RMSE & MSE
   val evaluator = new RegressionEvaluator()
@@ -111,7 +111,7 @@ object RecommenderOnMovies extends App {
 
 
   /**
-    * helper method to calculate the MeanSquaredError
+    * helper method to calculate the MeanSquaredError by hand
     *
     * @param row
     * @return
