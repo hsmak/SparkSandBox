@@ -1,7 +1,7 @@
 package org.hsmak.sql
 
 import org.apache.log4j.{Level, Logger}
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.SparkSession
 
 object DatasetSQLOpsOnNW extends App {
 
@@ -57,8 +57,8 @@ object DatasetSQLOpsOnNW extends App {
 
 
   val orderDetailsDF = spark.read
-    .option("header", "true").
-    option("inferSchema", "true")
+    .option("header", "true")
+    .option("inferSchema", "true")
     .csv(s"$base_data_dir/NW-Order-Details.csv")
 
 
@@ -124,7 +124,7 @@ object DatasetSQLOpsOnNW extends App {
     * *******************************************************/
 
 
-    //Joining two tables
+  //Joining two tables
   val Orders_JOIN_OrderDetails = spark.sql(
 
     """SELECT OrderDetailsTable.OrderID, ShipCountry, UnitPrice, Qty, Discount
