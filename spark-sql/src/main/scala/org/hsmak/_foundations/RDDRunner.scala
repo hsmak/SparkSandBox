@@ -27,7 +27,7 @@ object RDDRunner {
     val rdd = sc.textFile(filePath)
       .flatMap(line => line.split(","))
       .filter(_ contains "Gilbert")
-      .map(w => (w, 1))
+      .map(w => (w, 1)) // Mapping to a Tuple2 will yield a Key-Value HashMap; Hence we can use reduceByKey() as follows
       .reduceByKey { (a, b) => a + b }
       .sortByKey(true, 4)
 
