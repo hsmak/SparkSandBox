@@ -55,12 +55,12 @@ object ClassificationOnTitanic extends App {
 
   // VectorAssembler does not support the StringType type. So convert Gender to numeric
 
-  val indexer = new StringIndexer()
+  val genderIndexer = new StringIndexer()
     .setInputCol("Gender")
     .setOutputCol("GenderCat")
 
   //Fit the Categorical gender data into the DF
-  val passengersWithCategoricalGender = indexer.fit(passengers).transform(passengers)
+  val passengersWithCategoricalGender = genderIndexer.fit(passengers).transform(passengers)
 
   passengersWithCategoricalGender.show(5)
 
