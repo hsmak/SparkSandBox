@@ -1,4 +1,4 @@
-package org.hsmak.rdd
+package org.hsmak.dataframes
 
 import java.io.StringReader
 

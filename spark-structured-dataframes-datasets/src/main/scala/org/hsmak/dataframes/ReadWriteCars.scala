@@ -1,4 +1,4 @@
-package org.hsmak.rdd
+package org.hsmak.dataframes
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{SaveMode, SparkSession}
