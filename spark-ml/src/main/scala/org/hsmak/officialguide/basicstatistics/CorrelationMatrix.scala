@@ -63,5 +63,10 @@ object CorrelationMatrix extends App {
   // Extract the correlation matrix using *Spearman* method
   val Row(coeff2: Matrix) = Correlation.corr(df, "features", "spearman").head
   println(s"Spearman correlation matrix:\n $coeff2")
+  println
+
+  println("Matrix DF")
+  val matrix = Correlation.corr(df, "features")
+  println(matrix.show(false))
 
 }

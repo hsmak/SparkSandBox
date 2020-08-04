@@ -14,6 +14,8 @@ object DecisionTreeRegressionOnHousePrices extends App {
   //turn off Logging
   Logger.getLogger("org").setLevel(Level.OFF)
 
+  val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/house_prices"
+
   val spark = SparkSession
     .builder
     .master("local[*]")
@@ -24,7 +26,7 @@ object DecisionTreeRegressionOnHousePrices extends App {
   val df = spark.read
     .option("header", true)
     .option("inferSchema", true)
-    .csv("file:///home/hsmak/Development/git/spark-sandbox/_data/house_prices/train.csv")
+    .csv(s"$base_data_dir/train.csv")
 
   import spark.implicits._
 
