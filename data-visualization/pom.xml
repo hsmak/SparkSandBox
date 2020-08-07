@@ -24,7 +24,7 @@
 
         <scala.version>2.11.12</scala.version>
         <scala.compat.version>2.11</scala.compat.version>
-        <spec2.version>4.3.5</spec2.version>
+        <spec2.version>4.8.1</spec2.version>
 
         <spark.version>2.4.6</spark.version>
     </properties>
@@ -114,7 +114,7 @@
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_${scala.compat.version}</artifactId>
-            <version>3.0.5</version>
+            <version>3.0.8</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -173,7 +173,7 @@
                     <junitxml>.</junitxml>
                     <filereports>TestSuiteReport.txt</filereports>
                     <!-- Comma separated list of JUnit test class names to execute -->
-                    <jUnitClasses>samples.AppTest</jUnitClasses>
+                    <!--<jUnitClasses>samples.AppTest</jUnitClasses>-->
                 </configuration>
                 <executions>
                     <execution>
