@@ -1,5 +1,6 @@
 package org.hsmak.rdd
 
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
 
 /**
@@ -7,6 +8,7 @@ import org.apache.spark.sql.SparkSession
   */
 object RDDRunner {
 
+  Logger.getLogger("org").setLevel(Level.OFF)
 
   def main(args: Array[String]) {
 

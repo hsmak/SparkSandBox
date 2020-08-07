@@ -3,15 +3,18 @@ package org.hsmak.rdd
 import java.io.StringReader
 
 import au.com.bytecode.opencsv.CSVReader
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
 
 object SharedStateWithAccumulator {
+
+  Logger.getLogger("org").setLevel(Level.OFF)
 
   def main(args: Array[String]) {
 
     val spark = SparkSession
       .builder
-      .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
+      .master("local[*]") // ToDo: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
       .appName("AccumulatorRunner")
       .getOrCreate()
 
@@ -26,7 +29,7 @@ object SharedStateWithAccumulator {
     val invalidLineCounter = sc.longAccumulator("invalidLineCounter")
     val invalidNumericLineCounter = sc.longAccumulator("invalidNumericLineCounter")
 
-    val filePath = s"file://${System.getProperty("user.dir")}/_data/Line_of_numbers.csv"
+    val filePath = s"file://${System.getProperty("user.dir")}/_data/line-of-numbers.csv"
     val inFile = sc.textFile(filePath);
 
     val splitLines = inFile.flatMap(line => {

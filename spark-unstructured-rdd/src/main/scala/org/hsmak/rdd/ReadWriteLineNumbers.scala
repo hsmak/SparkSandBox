@@ -3,6 +3,7 @@ package org.hsmak.rdd
 import java.io.StringReader
 
 import au.com.bytecode.opencsv.CSVReader
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{SaveMode, SparkSession}
 
 /**
@@ -10,6 +11,7 @@ import org.apache.spark.sql.{SaveMode, SparkSession}
   */
 object ReadWriteLineNumbers {
 
+  Logger.getLogger("org").setLevel(Level.OFF)
 
   def main(args: Array[String]) {
 
