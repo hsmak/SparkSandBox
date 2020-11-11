@@ -1,6 +1,7 @@
 package org.hsmak.rdd
 
 import org.apache.log4j.{Level, Logger}
+import org.apache.spark.SparkContext
 import org.apache.spark.sql.SparkSession
 
 /**
@@ -25,6 +26,9 @@ object RDDRunner {
     val sc = spark.sparkContext
 
 
+    RDDOpsOnString("ababcddd", spark)
+
+
     val filePath = s"file://${System.getProperty("user.dir")}/_data/house_prices/test.csv"
     val rdd = sc.textFile(filePath)
       .flatMap(line => line.split(","))
@@ -41,9 +45,6 @@ object RDDRunner {
     val parallelRDD = sc.parallelize(rdd.collect, 10)
     val dfFromParRDD = parallelRDD.toDF("words", "frequency")
     dfFromParRDD.show
-
-
-
 
     // TODO - to be tested
     import scala.io.Source._
@@ -69,4 +70,9 @@ object RDDRunner {
     spark.stop()
   }
 
+  def RDDOpsOnString(str: String, spark: SparkSession) = {
+    val sc = spark.sparkContext
+    import spark.implicits._
+    sc.parallelize(str.map(c => c.toString).toSeq).map((_, 1)).reduceByKey(_+_).toDF("char", "count").show
+  }
 }
