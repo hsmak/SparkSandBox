@@ -3,10 +3,13 @@ package org.hsmak._01_low_level_abstractions.rdd
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
 
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
+
 /**
   * @author ${user.name}
   */
-object RDDRunner {
+object RDDWithFuturesRunner {
 
   Logger.getLogger("org").setLevel(Level.OFF)
 
@@ -18,9 +21,35 @@ object RDDRunner {
       .appName("RDDRunner")
       .getOrCreate()
 
-    RDDOpsOnString("ababcddd", spark)
-    RDDOpsOnCSV(spark)
-    RDDOpsOnJson(spark)
+
+    // Retrieve SparkContext from SparkSession
+    val sc = spark.sparkContext
+
+
+    import scala.concurrent.ExecutionContext.Implicits._
+    val f1 = Future {
+      RDDOpsOnString("ababcddd", spark)
+    }
+    val f2 =Future {
+      RDDOpsOnCSV(spark)
+    }
+    val f3 =Future {
+      RDDOpsOnJson(spark)
+    }
+
+//    f1.onComplete(t => {println(t)})
+//    f1.value.get
+
+//    f1.foreach(println)
+    val fs = List(f1, f2, f3)
+//    Future
+//      .sequence(fs)
+//      .onComplete(t => println(t))
+
+//    f1.map()
+    fs.map(f => Await.ready(f, Duration.Inf))
+
+
 
     spark.stop()
   }
@@ -76,6 +105,6 @@ object RDDRunner {
   def RDDOpsOnString(str: String, spark: SparkSession) = {
     val sc = spark.sparkContext
     import spark.implicits._
-    sc.parallelize(str.map(c => c.toString).toSeq).map((_, 1)).reduceByKey(_ + _).toDF("char", "count").show
+    sc.parallelize(str.map(c => c.toString).toSeq).map((_, 1)).reduceByKey(_+_).toDF("char", "count").show
   }
 }
