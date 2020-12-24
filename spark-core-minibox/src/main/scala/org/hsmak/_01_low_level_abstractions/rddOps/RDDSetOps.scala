@@ -1,0 +1,31 @@
+package org.hsmak._01_low_level_abstractions.rddOps
+
+import org.apache.log4j.{Level, Logger}
+import org.apache.spark.sql.SparkSession
+
+/**
+  * @author ${user.name}
+  */
+object RDDSetOps {
+
+  Logger.getLogger("org").setLevel(Level.OFF)
+
+  def main(args: Array[String]) {
+
+    val spark = SparkSession
+      .builder
+      .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
+      .appName("RDDSetOps")
+      .getOrCreate()
+
+    import spark.implicits._
+
+
+    // Retrieve SparkContext from SparkSession
+    val sc = spark.sparkContext
+
+
+    spark.stop()
+  }
+
+}
