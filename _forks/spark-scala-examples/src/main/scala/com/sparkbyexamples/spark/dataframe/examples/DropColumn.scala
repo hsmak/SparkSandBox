@@ -3,6 +3,12 @@ package com.sparkbyexamples.spark.dataframe.examples
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructType}
 import org.apache.spark.sql.functions.col
+
+/**
+  * Observation - Alternatives to Seq[Row] and Schema:
+  *     - Load into DataFrame from CSV via spark.read.csv()
+  *     - Case Class T and Dataset[T]
+  */
 object DropColumn extends App {
 
   val spark:SparkSession = SparkSession.builder()
