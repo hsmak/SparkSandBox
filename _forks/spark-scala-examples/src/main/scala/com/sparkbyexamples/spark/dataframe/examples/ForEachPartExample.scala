@@ -1,6 +1,6 @@
 package com.sparkbyexamples.spark.dataframe.examples
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{Row, SparkSession}
 
 object ForEachPartExample extends App {
 
@@ -15,7 +15,9 @@ object ForEachPartExample extends App {
 
   // foreachPartition DataFrame
   val df = spark.createDataFrame(data).toDF("Product","Amount","Country")
-  df.foreachPartition(partition => {
+
+  // reason behind explicit type: https://stackoverflow.com/questions/62843747/scala-compiler-failed-to-infer-type-inside-spark-lambda-function
+  df.foreachPartition((partition:scala.collection.Iterator[Row]) => {
     //Initialize any database connection
     partition.foreach(fun=>{
       //apply the function
