@@ -50,7 +50,11 @@ object EnrichmentInAStream {
       message.toString.toUpperCase()
     }).as[String]
 
-    upperMessageDs.foreachPartition(messageIt => {
+    /*
+     * ToDo - For some reason, this throws an error???
+     *    Resolution: https://stackoverflow.com/questions/62843747/scala-compiler-failed-to-infer-type-inside-spark-lambda-function
+     */
+    upperMessageDs.foreachPartition((messageIt:scala.collection.Iterator[String]) => {
       //make connection to storage layer
       // May use static connection
       messageIt.foreach(message => {
