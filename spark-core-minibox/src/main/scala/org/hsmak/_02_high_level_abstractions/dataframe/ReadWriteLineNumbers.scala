@@ -1,4 +1,4 @@
-package org.hsmak._02_high_level_abstractions.dataframes
+package org.hsmak._02_high_level_abstractions.dataframe
 
 import java.io.StringReader
 

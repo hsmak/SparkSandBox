@@ -30,6 +30,7 @@
         <!--test - junit-->
         <junit4.version>4.13.1</junit4.version>
         <junit5-jupiter.version>5.7.0</junit5-jupiter.version>
+        <log4j-2.version>2.14.0</log4j-2.version>
     </properties>
 
     <!--
@@ -93,11 +94,22 @@
             <version>2.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j-2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j-2.version}</version>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.1</version>
+            <version>${junit4.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

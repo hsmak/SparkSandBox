@@ -1,4 +1,4 @@
-package org.hsmak._02_high_level_abstractions.sqlFunctions
+package org.hsmak._04_sql.sqlFunctions
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession

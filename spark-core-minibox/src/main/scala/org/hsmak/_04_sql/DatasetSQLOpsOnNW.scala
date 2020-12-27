@@ -1,4 +1,4 @@
-package org.hsmak._02_high_level_abstractions.sql
+package org.hsmak._04_sql
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
@@ -108,7 +108,7 @@ object DatasetSQLOpsOnNW extends App {
   productsDS.dtypes.foreach(println) // verify column types
 
 
-   /* ******************************************************
+  /* ******************************************************
     * ################# Creating Views/Tables ##############
     * ***************************************************** */
 

@@ -1,4 +1,4 @@
-package org.hsmak._02_high_level_abstractions.dataframes
+package org.hsmak._02_high_level_abstractions.dataframe
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{SaveMode, SparkSession}
@@ -12,7 +12,7 @@ object ReadWriteCars extends App {
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/car-data"
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
@@ -23,7 +23,7 @@ object ReadWriteCars extends App {
     .getOrCreate()
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating DataFrames from CSVs ###########
     * ******************************************************/
 
@@ -39,7 +39,7 @@ object ReadWriteCars extends App {
   carMileageDF.printSchema()
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Writing DataFrames back #################
     * ******************************************************/
 
