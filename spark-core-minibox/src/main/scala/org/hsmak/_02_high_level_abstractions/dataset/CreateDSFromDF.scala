@@ -33,11 +33,13 @@ object CreateDSFromDF extends App {
     .option("header", "true")
     .csv(s"$base_data_dir/NW-Orders.csv")
     .as[Order] // This will create a typed DataFrame, aka DataSet
+
   val orderDetailsDS = spark.read
     .option("header", "true")
     .option("inferSchema", "true")
     .csv(s"$base_data_dir/NW-Order-Details.csv")
     .as[OrderDetails] // This will create a typed DataFrame, aka DataSet
+
   val productsDS = spark.read.option("header", "true")
     .option("inferSchema", "true")
     .csv(s"$base_data_dir/NW-Products.csv")
