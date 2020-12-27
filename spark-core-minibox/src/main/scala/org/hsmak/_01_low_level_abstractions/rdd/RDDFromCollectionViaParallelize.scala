@@ -18,7 +18,7 @@ import scala.concurrent.{Await, Future}
   *         - That's when DataFrames/DataSets come in the picture
   *         - SchemaType/StructType would be involved
   */
-object RDDFromParallelizeCollection extends App {
+object RDDFromCollectionViaParallelize extends App {
 
   Logger.getLogger("org").setLevel(Level.OFF)
 

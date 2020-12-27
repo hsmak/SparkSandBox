@@ -3,7 +3,7 @@ package org.hsmak._01_low_level_abstractions.rdd
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
 
-object RDDFromMakeRDD extends App {
+object RDDFromCollectionViaMakeRDD extends App {
 
   Logger.getLogger("org").setLevel(Level.OFF)
 

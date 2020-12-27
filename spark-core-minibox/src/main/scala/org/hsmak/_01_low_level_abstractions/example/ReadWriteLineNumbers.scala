@@ -1,10 +1,10 @@
-package org.hsmak._01_low_level_abstractions.rdd
-
-import java.io.StringReader
+package org.hsmak._01_low_level_abstractions.example
 
 import au.com.bytecode.opencsv.CSVReader
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{SaveMode, SparkSession}
+
+import java.io.StringReader
 
 /**
   * @author ${user.name}

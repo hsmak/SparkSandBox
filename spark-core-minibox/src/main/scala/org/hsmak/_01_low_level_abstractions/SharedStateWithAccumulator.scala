@@ -1,10 +1,10 @@
-package org.hsmak._01_low_level_abstractions.rdd
-
-import java.io.StringReader
+package org.hsmak._01_low_level_abstractions
 
 import au.com.bytecode.opencsv.CSVReader
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
+
+import java.io.StringReader
 
 object SharedStateWithAccumulator {
 
@@ -30,9 +30,9 @@ object SharedStateWithAccumulator {
     val invalidNumericLineCounter = sc.longAccumulator("invalidNumericLineCounter")
 
     val filePath = s"file://${System.getProperty("user.dir")}/_data/line-of-numbers.csv"
-    val inFile = sc.textFile(filePath);
+    val txtFileRDD = sc.textFile(filePath) // RDD[String]
 
-    val splitLines = inFile.flatMap(line => {
+    val splitLines = txtFileRDD.flatMap(line => {
       try {
         val reader = new CSVReader(new StringReader(line))
         Some(reader.readNext())
