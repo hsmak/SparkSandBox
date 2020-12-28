@@ -29,7 +29,7 @@ object ScientificOpsOnHypot extends App {
 
 
   val aList: List[Int] = List(-1, 10, 100, 1000)
-  var aRDD = spark.sparkContext.parallelize(aList)
+  var aRDD = spark.sparkContext.parallelize(aList) // RDD[Int]
 
   /**
     * `import spark.implicits._` can replace the following two line.
