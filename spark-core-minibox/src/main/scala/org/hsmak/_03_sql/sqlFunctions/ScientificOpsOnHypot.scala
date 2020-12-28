@@ -12,18 +12,18 @@ object ScientificOpsOnHypot extends App {
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data"
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
   val spark = SparkSession
     .builder
-    .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
+    .master("local[*]")
     .appName("ScientificOpsOnHypot")
     .getOrCreate()
 
 
-  /** *****************************************************
+   /* *****************************************************
     * ############ Creating RDD from Collection ###########
     * *****************************************************/
 
@@ -55,7 +55,7 @@ object ScientificOpsOnHypot extends App {
 
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating DataFrames from CSVs ###########
     * ******************************************************/
 

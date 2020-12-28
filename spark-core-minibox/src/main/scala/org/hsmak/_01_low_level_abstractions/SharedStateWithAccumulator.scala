@@ -14,7 +14,7 @@ object SharedStateWithAccumulator {
 
     val spark = SparkSession
       .builder
-      .master("local[*]") // ToDo: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
+      .master("local[*]")
       .appName("AccumulatorRunner")
       .getOrCreate()
 

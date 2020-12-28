@@ -12,18 +12,18 @@ object StatOpsOnCar extends App {
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/car-data"
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
   val spark = SparkSession
     .builder
-    .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
+    .master("local[*]")
     .appName("StatOpsOnCar")
     .getOrCreate()
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating DataFrames from CSVs ###########
     * ******************************************************/
 

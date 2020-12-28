@@ -17,7 +17,7 @@ object ReadWriteLineNumbers {
 
     val spark = SparkSession
       .builder
-      .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
+      .master("local[*]")
       .appName("RDDWithCSV")
       .getOrCreate()
 

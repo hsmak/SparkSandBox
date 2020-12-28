@@ -11,18 +11,18 @@ object AggregateOpsOnCars extends App {
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/car-data"
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
   val spark = SparkSession
     .builder
-    .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
+    .master("local[*]")
     .appName("AggregateOpsOnCars")
     .getOrCreate()
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating DataFrames from CSVs ###########
     * ******************************************************/
 
@@ -54,7 +54,7 @@ object AggregateOpsOnCars extends App {
   carMileageDF.groupBy("automatic").agg(avg(carMileageDF("mpg")), mean(carMileageDF("torque"))).show()
 
 
-  /** *******************************************
+   /* *******************************************
     * ########## Using the $ Notation ###########
     * *******************************************/
 

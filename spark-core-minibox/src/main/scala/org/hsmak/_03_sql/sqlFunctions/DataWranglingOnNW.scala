@@ -11,13 +11,13 @@ object DataWranglingOnNW extends App {
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/NW"
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
   val spark = SparkSession
     .builder
-    .master("local[*]") // ToDO: Which config takes precedence? MainApp hard-coded or spark-submit argument; mvn exec:exec?
+    .master("local[*]")
     .appName("DataWranglingOnNW")
     .getOrCreate()
 
@@ -25,7 +25,7 @@ object DataWranglingOnNW extends App {
   import spark.implicits._
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating DataFrames from CSVs ###########
     * ******************************************************/
 
@@ -52,7 +52,7 @@ object DataWranglingOnNW extends App {
     */
 
 
-  /** *************************************************************************
+   /* *************************************************************************
     * ############ Q1. How many orders were placed by each customer? ###########
     * *************************************************************************/
 
@@ -64,7 +64,7 @@ object DataWranglingOnNW extends App {
   ordersDF.groupBy($"CustomerID").agg(count($"CustomerID").as("count")).sort($"count".desc).show(6)
 
 
-  /** ************************************************************************
+   /* ************************************************************************
     * ############ Q2. How many orders were placed in each country? ###########
     * ************************************************************************/
 
@@ -80,7 +80,7 @@ object DataWranglingOnNW extends App {
     .show(6)
 
 
-  /** ***************************************
+   /* ***************************************
     * ############ Data Wrangling ###########
     * ***************************************/
 
@@ -144,7 +144,7 @@ object DataWranglingOnNW extends App {
   totalOrdersByYear.sort($"Year").show(30)
 
 
-  /** ********************************************************************
+   /* ********************************************************************
     * ######### Q3. How many orders were placed per month & year? ########
     * ********************************************************************/
 
@@ -152,7 +152,7 @@ object DataWranglingOnNW extends App {
   totalOrdersByYearMonth.sort($"Year", $"Month").show(30)
 
 
-  /** ******************************************************************************************
+   /* ******************************************************************************************
     * ############ Q4. What is the total number of sales for each customer per year? ###########
     * ******************************************************************************************/
 
@@ -160,7 +160,7 @@ object DataWranglingOnNW extends App {
   totalOrdersByCustomerYear.sort($"CustomerID", $"Year").show(30)
 
 
-  /** ****************************************************************************
+   /* ****************************************************************************
     * ############ Q5. What is the average order by customer per year? ###########
     * ****************************************************************************/
 
@@ -168,7 +168,7 @@ object DataWranglingOnNW extends App {
   avgOrdersByCustomerYear.sort($"CustomerID", $"Year").show(30)
 
 
-  /** *****************************************************
+   /* *****************************************************
     * ############ Q6. Average order by customer ##########
     * *****************************************************/
 
