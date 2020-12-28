@@ -22,12 +22,12 @@ object DataFrameFromTextFile {
 
     val filePath = s"file://${System.getProperty("user.dir")}/_data/house_prices/test.csv"
 
-    // Notice the use of SparkSession not SparkContext to emit DF/DS not RDD
+    // Notice the use of SparkSession not SparkContext to emit DataSet[String] not RDD
     val stringDS = spark.read.textFile(filePath)
 
     val dataset = stringDS // Transformation ops will emit Dataset
-      .flatMap(line => line.split(",")) //spark.read.csv() will take care of all this
-      .map(w => (w, 1))//why can't reduceByKey on Dataset???
+      .flatMap(line => line.split(",")) // spark.read.csv() will take care of all this
+      .map(w => (w, 1)) // why can't reduceByKey on Dataset???
 
     dataset.show()
 

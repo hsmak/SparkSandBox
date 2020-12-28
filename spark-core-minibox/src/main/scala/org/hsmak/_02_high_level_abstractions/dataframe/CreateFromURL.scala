@@ -20,7 +20,7 @@ object CreateFromURL extends App {
   /**
     * Observations:
     *   - It's really converting the content from the URL into a Multiline String, then
-    *   - convert into a Seq[String]; where the huge String is split by the newline '\n'
+    *   - Convert into a Seq[String]; where the huge String is split by the newline '\n'
     *   - Parallelize the Seq[String]; this would generate an RDD[String], then
     *   - Convert RDD[String] to Dataset[String], then
     *   - Pass the Dataset[String] to spark.read.json()

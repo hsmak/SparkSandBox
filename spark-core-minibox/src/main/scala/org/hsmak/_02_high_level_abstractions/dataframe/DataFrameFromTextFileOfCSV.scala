@@ -26,7 +26,7 @@ object DataFrameFromTextFileOfCSV {
     val df = spark.read.option("header", true).option("inferSchema", true).csv(filePath)
 //    df.show(1)
 
-    // Notice the use of SparkSession not SparkContext to emit DF/DS not RDD
+    // Notice the use of SparkSession not SparkContext to emit DataFrame[Row] not RDD
     val dfTransformedDS = df
       .map(row => row.getAs[String]("Neighborhood"))
       .map(w => (w, 1)) // emits Dataset
