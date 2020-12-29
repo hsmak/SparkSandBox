@@ -151,6 +151,20 @@ object DatasetSQLOpsOnNW extends App {
 
   Sales_GROUPEDBY_ShipCountry.orderBy($"ProductSales".desc).show(10) // Top 10 by Sales
 
+  // We could use the already joined tables in 'Orders_JOIN_OrderDetails' instead of rejoining again
+  import org.apache.spark.sql.functions.sum
+  Orders_JOIN_OrderDetails
+    .groupBy("ShipCountry")
+    .agg(sum($"UnitPrice" * $"Qty" * $"Discount").as("ProductSales"))
+    .show
+  Orders_JOIN_OrderDetails.createOrReplaceTempView("Orders_JOIN_OrderDetails") // Alternatively, we could create a temp view for it
+  spark.sql(
+    """
+      |SELECT ShipCountry, SUM(UnitPrice * Qty * Discount) AS ProductSales
+      |FROM Orders_JOIN_OrderDetails
+      |GROUP BY ShipCountry""".stripMargin)
+    .show
+
 
   //Sales GroupedBy Products
   val Sales_GROUPEDBY_Products = spark.sql(
