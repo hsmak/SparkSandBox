@@ -35,7 +35,7 @@ object LinearRegressionOnHousePrices extends App {
   //Store the target column in a val <- the column whose value to be predicted
   val labelField = "SalePrice"
 
-  /** **********************************************
+   /* **********************************************
     * ########## Feature Transformation ############
     * **********************************************/
 
@@ -110,7 +110,7 @@ object LinearRegressionOnHousePrices extends App {
   scalar_categorical_df.show
 
 
-  /** *****************************************************
+   /* *****************************************************
     * ########## Feature Normalization/Scaling ############
     * *****************************************************/
 
@@ -149,7 +149,7 @@ object LinearRegressionOnHousePrices extends App {
   dataCombinedDF.show
 
 
-  /** ***************************************************
+   /* ***************************************************
     * ########## SparkML - Feature Selectors ############
     * ***************************************************/
 
@@ -167,7 +167,7 @@ object LinearRegressionOnHousePrices extends App {
   output.show*/
 
 
-  /** *************************************************************
+   /* *************************************************************
     * ########## Data Splitting : Training & Test Sets ############
     * *************************************************************/
 
@@ -181,7 +181,7 @@ object LinearRegressionOnHousePrices extends App {
   testData.show
 
 
-  /** *****************************************
+   /* *****************************************
     * ########## Linear Regression ############
     * *****************************************/
 
@@ -193,14 +193,14 @@ object LinearRegressionOnHousePrices extends App {
     .setRegParam(0.3) // ToDo - is this the LearningRate/StepSize? Theta?
 
 
-  /** *******************************************
+   /* *******************************************
     * ########## Fit/Train the Model ############
     * *******************************************/
 
   // Fit the Model
   val lrModel = lr.fit(trainData) // ML Training and Fitting happens here!
 
-  /** *******************************************
+   /* *******************************************
     * ########## Evaluating the Model ###########
     * *******************************************/
 
@@ -221,7 +221,7 @@ object LinearRegressionOnHousePrices extends App {
   }
 
 
-  /** **********************************************************
+   /* **********************************************************
     * ########## Compare Predicted vs Actual Values ############
     * **********************************************************/
 

@@ -19,7 +19,7 @@ object LinearRegressionOnCars extends App {
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/car-data"
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
@@ -30,7 +30,7 @@ object LinearRegressionOnCars extends App {
     .getOrCreate()
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating DataFrames from CSVs ###########
     * ******************************************************/
 
@@ -49,12 +49,12 @@ object LinearRegressionOnCars extends App {
   carMileageDF.describe("mpg", "hp", "weight", "automatic").show()
 
 
-  /** ******************************************
+   /* ******************************************
     * ############ Linear Regression ###########
     * ******************************************/
 
 
-  /** ******************************************
+   /* ******************************************
     * ########## Feature Transformer ###########
     * ******************************************/
 
@@ -79,7 +79,7 @@ object LinearRegressionOnCars extends App {
   val carsExtractedFeatures = assembler.transform(carsNoNullDF)
   carsExtractedFeatures.show(40)
 
-  /** *************************************************************
+   /* *************************************************************
     * ############ Data Splitting: Training & Test Sets ###########
     * *************************************************************/
 
@@ -90,7 +90,7 @@ object LinearRegressionOnCars extends App {
 
   println("Train = " + train.count() + " Test = " + test.count())
 
-  /** *****************************************
+   /* *****************************************
     * ########## Linear Regression ############
     * *****************************************/
 
@@ -100,7 +100,7 @@ object LinearRegressionOnCars extends App {
     .setElasticNetParam(0.8)
     .setLabelCol("mpg")
 
-  /** ******************************************
+   /* ******************************************
     * ############ Training Data ###########
     * ******************************************/
 
@@ -120,7 +120,7 @@ object LinearRegressionOnCars extends App {
   println(s"RMSE: ${lrTrainedSummary.rootMeanSquaredError}")
   println(s"r2: ${lrTrainedSummary.r2}")
 
-  /** ************************************************
+   /* ************************************************
     * ############ Prediction & Evaluating ###########
     * ************************************************/
 

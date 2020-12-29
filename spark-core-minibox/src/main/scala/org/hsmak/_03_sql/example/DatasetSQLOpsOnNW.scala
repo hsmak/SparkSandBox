@@ -1,4 +1,4 @@
-package org.hsmak._03_sql
+package org.hsmak._03_sql.example
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
@@ -27,7 +27,7 @@ object DatasetSQLOpsOnNW extends App {
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/NW"
 
 
-   /* ******************************************************
+  /* ******************************************************
     * ############ Creating SparkSession ###########
     * ***************************************************** */
 
@@ -42,7 +42,7 @@ object DatasetSQLOpsOnNW extends App {
   import spark.implicits._
 
 
-   /* ******************************************************
+  /* ******************************************************
     * ############ Creating DataFrames from CSVs ###########
     * ***************************************************** */
 
@@ -68,7 +68,7 @@ object DatasetSQLOpsOnNW extends App {
     .csv(s"$base_data_dir/NW-Products.csv")
 
 
-   /* ****************************************************
+  /* ****************************************************
     * ############ Creating Datasets from DF ###########
     * *************************************************** */
 
@@ -120,7 +120,7 @@ object DatasetSQLOpsOnNW extends App {
   productsDS.createOrReplaceTempView("ProductsTable")
 
 
-   /* ******************************************************
+  /* ******************************************************
     * ################# SQL Operations #####################
     * ****************************************************** */
 
@@ -152,7 +152,9 @@ object DatasetSQLOpsOnNW extends App {
   Sales_GROUPEDBY_ShipCountry.orderBy($"ProductSales".desc).show(10) // Top 10 by Sales
 
   // We could use the already joined tables in 'Orders_JOIN_OrderDetails' instead of rejoining again
+
   import org.apache.spark.sql.functions.sum
+
   Orders_JOIN_OrderDetails
     .groupBy("ShipCountry")
     .agg(sum($"UnitPrice" * $"Qty" * $"Discount").as("ProductSales"))
@@ -183,7 +185,6 @@ object DatasetSQLOpsOnNW extends App {
     * for date/timestamp ops, refer to:
     *   - https://spark.apache.org/docs/latest/api/sql/index.html#timestamp
     *   - https://spark.apache.org/docs/latest/sql-ref-datetime-pattern.html
-    *   - val dtf = DateTimeFormatter.ofPattern("MM/dd/yy")
     *
     * ```
     * sql> trunc(to_date(OrdersTable.OrderDate, 'dd/mm/yy'), 'yyyy')

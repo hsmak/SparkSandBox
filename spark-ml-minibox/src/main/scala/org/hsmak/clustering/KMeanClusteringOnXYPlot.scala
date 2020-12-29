@@ -13,7 +13,7 @@ object KMeanClusteringOnXYPlot extends App {
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data"
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
@@ -26,7 +26,7 @@ object KMeanClusteringOnXYPlot extends App {
   import spark.implicits._
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating DataFrames from CSVs ###########
     * ******************************************************/
 

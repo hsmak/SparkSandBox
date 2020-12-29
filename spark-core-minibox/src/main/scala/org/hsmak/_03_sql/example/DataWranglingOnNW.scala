@@ -1,4 +1,4 @@
-package org.hsmak._03_sql.sqlFunctions
+package org.hsmak._03_sql.example
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
@@ -11,7 +11,7 @@ object DataWranglingOnNW extends App {
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/NW"
 
 
-   /* ******************************************************
+  /* ******************************************************
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
@@ -25,7 +25,7 @@ object DataWranglingOnNW extends App {
   import spark.implicits._
 
 
-   /* ******************************************************
+  /* ******************************************************
     * ############ Creating DataFrames from CSVs ###########
     * ******************************************************/
 
@@ -52,19 +52,20 @@ object DataWranglingOnNW extends App {
     */
 
 
-   /* *************************************************************************
+  /* *************************************************************************
     * ############ Q1. How many orders were placed by each customer? ###########
     * *************************************************************************/
 
   val orderByCustomer = ordersDF.groupBy($"CustomerID").count
   orderByCustomer.sort($"count".desc).show(5)
   // Alternatively using aggregate functions
+
   import org.apache.spark.sql.functions._
 
   ordersDF.groupBy($"CustomerID").agg(count($"CustomerID").as("count")).sort($"count".desc).show(6)
 
 
-   /* ************************************************************************
+  /* ************************************************************************
     * ############ Q2. How many orders were placed in each country? ###########
     * ************************************************************************/
 
@@ -72,6 +73,7 @@ object DataWranglingOnNW extends App {
   orderByCountry.sort(orderByCountry("count").desc).show(5)
 
   // Alternatively using aggregate functions
+
   import org.apache.spark.sql.functions._
 
   ordersDF.groupBy($"ShipCountry")
@@ -80,7 +82,7 @@ object DataWranglingOnNW extends App {
     .show(6)
 
 
-   /* ***************************************
+  /* ***************************************
     * ############ Data Wrangling ###########
     * ***************************************/
 
@@ -88,10 +90,10 @@ object DataWranglingOnNW extends App {
     * Q3 - Q5 will need Data Wrangling before the answers are attempted. Data Wrangling will be performed as follows:
     *
     * 1. Add TotalPrice/Order column to the OrdersDF
-    *   1.1. Add OrderPrice to OrderDetails by performing the arithmetic calculation
-    *   1.2. Aggregate TotalPrice by OrderID
-    *   1.3. Join OrderDetails & Orders so the new table will have TotalPrice
-    *   1.4. Perform null-check on TotalPrice column
+    * 1.1. Add OrderPrice to OrderDetails by performing the arithmetic calculation
+    * 1.2. Aggregate TotalPrice by OrderID
+    * 1.3. Join OrderDetails & Orders so the new table will have TotalPrice
+    * 1.4. Perform null-check on TotalPrice column
     * 2. Add a "Date" column
     * 3. Extract "Month" & "Year" from the "Date" column
     */
@@ -144,7 +146,7 @@ object DataWranglingOnNW extends App {
   totalOrdersByYear.sort($"Year").show(30)
 
 
-   /* ********************************************************************
+  /* ********************************************************************
     * ######### Q3. How many orders were placed per month & year? ########
     * ********************************************************************/
 
@@ -152,7 +154,7 @@ object DataWranglingOnNW extends App {
   totalOrdersByYearMonth.sort($"Year", $"Month").show(30)
 
 
-   /* ******************************************************************************************
+  /* ******************************************************************************************
     * ############ Q4. What is the total number of sales for each customer per year? ###########
     * ******************************************************************************************/
 
@@ -160,7 +162,7 @@ object DataWranglingOnNW extends App {
   totalOrdersByCustomerYear.sort($"CustomerID", $"Year").show(30)
 
 
-   /* ****************************************************************************
+  /* ****************************************************************************
     * ############ Q5. What is the average order by customer per year? ###########
     * ****************************************************************************/
 
@@ -168,7 +170,7 @@ object DataWranglingOnNW extends App {
   avgOrdersByCustomerYear.sort($"CustomerID", $"Year").show(30)
 
 
-   /* *****************************************************
+  /* *****************************************************
     * ############ Q6. Average order by customer ##########
     * *****************************************************/
 

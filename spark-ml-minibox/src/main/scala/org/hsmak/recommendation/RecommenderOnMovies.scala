@@ -12,7 +12,7 @@ object RecommenderOnMovies extends App {
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/movielens"
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
@@ -26,7 +26,7 @@ object RecommenderOnMovies extends App {
   import spark.implicits._
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Loading Data & Transformation ###########
     * ******************************************************/
 

@@ -8,7 +8,7 @@ object BasicStatistics extends App {
   Logger.getLogger("org").setLevel(Level.OFF)
 
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating SparkSession ###########
     * ******************************************************/
 
@@ -20,7 +20,7 @@ object BasicStatistics extends App {
 
   val base_data_dir = s"file://${System.getProperty("user.dir")}/_data/car-data"
 
-  /** ******************************************************
+   /* ******************************************************
     * ############ Creating DataFrames from CSVs ###########
     * ******************************************************/
 

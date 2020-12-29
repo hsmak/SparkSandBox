@@ -30,6 +30,10 @@ object CorrelationMatrix extends App {
     .getOrCreate()
 
 
+  /*
+   * Observations:
+   *    - Vectors, Dense or Sparse, represent extracted features of some corresponding columns
+   */
   val data = Seq(
     Vectors.sparse(4, Seq((0, 1.0), (3, -2.0))),
     Vectors.dense(4.0, 5.0, 0.0, 3.0),
