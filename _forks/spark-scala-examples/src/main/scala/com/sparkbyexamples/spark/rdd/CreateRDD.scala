@@ -11,6 +11,7 @@ object CreateRDD {
       .appName("SparkByExamples.com")
       .getOrCreate()
 
+    // Parallelize Seq[T2]
     val rdd=spark.sparkContext.parallelize(Seq(("Java", 20000), ("Python", 100000), ("Scala", 3000)))
     rdd.foreach(println)
 

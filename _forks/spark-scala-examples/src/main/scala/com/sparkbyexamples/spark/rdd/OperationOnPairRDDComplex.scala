@@ -34,6 +34,7 @@ object OperationOnPairRDDComplex extends App{
   //    Aggregate By Key sum Results
   //    bar -> 3
   //    foo -> 5
+  println
 
   val studentRDD = spark.sparkContext.parallelize(Array(
     ("Joseph", "Maths", 83), ("Joseph", "Physics", 74), ("Joseph", "Chemistry", 91), ("Joseph", "Biology", 82),
@@ -45,10 +46,11 @@ object OperationOnPairRDDComplex extends App{
     ("Juan", "Maths", 63), ("Juan", "Physics", 69), ("Juan", "Chemistry", 64), ("Juan", "Biology", 60)), 3)
 
   //ReducebyKey returns same datatype
-  val studentKey = studentRDD.map(f=> (f._1,(f._2,f._3)))
-  studentKey.reduceByKey((accu,v)=>{
-    (accu._1,if(accu._2 > v._2)accu._2 else v._2)
+  val studentKey = studentRDD.map(f=> (f._1,(f._2,f._3))) // Convert Tuple3 to Tuple2[String, Tuple2[String, Int]]
+  studentKey.reduceByKey((tup1, tup2)=>{
+    (tup1._1, if(tup1._2 > tup2._2) tup1._2 else tup2._2)
   }).foreach(println)
+  println
 
   //Similar example with aggregateByKey
   val def1 = (accu:Int, v:(String,Int)) => if(accu > v._2) accu else v._2
@@ -62,6 +64,10 @@ object OperationOnPairRDDComplex extends App{
   // (Juan,69)
   // (Jimmy,97)
   // (Cory,71)
+  println("----------------")
+  studentKey.aggregateByKey(0)((acc, nxtTup) => if(acc > nxtTup._2) acc else nxtTup._2,
+    (acc1, acc2) => if( acc1 > acc2) acc1 else acc2).foreach(println)
+  println
 
   val zeroval = ("",0)
   val subjectKey = studentRDD.map(f=> (f._2,(f._1,f._3)))
@@ -91,6 +97,10 @@ object OperationOnPairRDDComplex extends App{
       Ordering[Int].compare(x._2, y._2)
   })
   println("First class student : "+tot._1 +"=" + tot._2)
+  println("-------------")
+  val tot2 = studentTotals.max()(Ordering.by[Tuple2[String, Int], Int](_._2))
+  println("First class student : "+tot2._1 +"=" + tot2._2)
+
 
 
   //combinekeykey

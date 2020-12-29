@@ -12,6 +12,7 @@ object ADQExample extends App{
   spark.sparkContext.setLogLevel("ERROR")
 
   import spark.implicits._
+  // RDD[Tuple6]
   val simpleData = Seq(("James","Sales","NY",90000,34,10000),
     ("Michael","Sales","NY",86000,56,20000),
     ("Robert","Sales","CA",81000,30,23000),

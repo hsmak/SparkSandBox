@@ -29,4 +29,16 @@ object ReduceByKeyExample extends App{
 
   rdd2.foreach(println)
 
+  /*
+   * Complete Example
+   */
+  val seqOfStr = Seq("Project Gutenberg’s",
+    "Alice’s Adventures in Wonderland",
+    "Project Gutenberg’s",
+    "Adventures in Wonderland",
+    "Project Gutenberg’s")
+  val rddOfStr = spark.sparkContext.parallelize(seqOfStr)
+  rddOfStr.flatMap(s => s.split(" "))
+    .map(w => (w, 1))
+    .reduceByKey(_+_).foreach(println)
 }
