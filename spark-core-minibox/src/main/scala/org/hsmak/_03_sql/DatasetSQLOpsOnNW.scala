@@ -35,6 +35,7 @@ object DatasetSQLOpsOnNW extends App {
     .builder
     .master("local[*]")
     .appName("DatasetRunner")
+    .config("spark.sql.legacy.timeParserPolicy", "LEGACY")
     .getOrCreate()
 
 
@@ -167,6 +168,8 @@ object DatasetSQLOpsOnNW extends App {
   /**
     * for date/timestamp ops, refer to:
     *   - https://spark.apache.org/docs/latest/api/sql/index.html#timestamp
+    *   - https://spark.apache.org/docs/latest/sql-ref-datetime-pattern.html
+    *   - val dtf = DateTimeFormatter.ofPattern("MM/dd/yy")
     *
     * ```
     * sql> trunc(to_date(OrdersTable.OrderDate, 'dd/mm/yy'), 'yyyy')
@@ -190,4 +193,33 @@ object DatasetSQLOpsOnNW extends App {
       |ORDER BY ProductSales_97 DESC""".stripMargin)
 
   Sales_GROUPEDBY_Products_1997.show
+  /*
+
+      +--------------------+---------------+
+      |         ProductName|ProductSales_97|
+      +--------------------+---------------+
+      | GnocchidinonnaAlice|            921|
+      | RacletteCourdavault|            752|
+      |    GorgonzolaTelino|            672|
+      |    CamembertPierrot|            665|
+      | Rh�nbr�uKlosterbier|            630|
+      |      BostonCrabMeat|            626|
+      |    SirRodneysScones|            610|
+      |             Pavlova|            571|
+      |JacksNewEnglandCl...|            549|
+      |         AliceMutton|            527|
+      | ManjimupDriedApples|            501|
+      |        Lakkalik��ri|            497|
+      |           Tourti�re|            494|
+      |        Tarteausucre|            482|
+      |LouisianaFieryHot...|            470|
+      |OriginalFrankfurt...|            452|
+      |SingaporeanHokkie...|            451|
+      |               Chang|            435|
+      |    Gudbrandsdalsost|            430|
+      |   Guaran�Fant�stica|            421|
+      +--------------------+---------------+
+      only showing top 20 rows
+
+   */
 }
