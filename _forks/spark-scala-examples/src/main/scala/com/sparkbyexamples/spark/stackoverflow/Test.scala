@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.stackoverflow
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
-object Test {
+object Test extends MyContext{
 
   def main(args: Array[String]): Unit = {
 

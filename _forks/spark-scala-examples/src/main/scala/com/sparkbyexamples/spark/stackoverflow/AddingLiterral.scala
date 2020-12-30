@@ -1,12 +1,13 @@
 package com.sparkbyexamples.spark.stackoverflow
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
 case class Employee(EmpId: String, Experience: Double, Salary: Double)
 
 case class Employee2(EmpId: EmpData, Experience: EmpData, Salary: EmpData)
 case class EmpData(key: String,value:String)
-object AddingLiterral {
+object AddingLiterral extends MyContext {
   def main(args: Array[String]): Unit = {
 
     val spark = SparkSession.builder()
@@ -17,11 +18,13 @@ object AddingLiterral {
     import org.apache.spark.sql.functions._
     val data = Seq(("111",5,50000),("222",6,60000),("333",7,60000))
     val df = data.toDF("EmpId","Experience","Salary")
+    df.show
 
-    val newdf = df.withColumn("EmpId", struct(lit("1").as("key"),col("EmpId").as("value")))
-      .withColumn("Experience", struct(lit("2").as("key"),col("Experience").as("value")))
-      .withColumn("Salary", struct(lit("3").as("key"),col("Salary").as("value")))
-      .show(false)
+    val newdf = df
+      .withColumn("EmpId", struct(lit("1").as("key"), col("EmpId").as("value")))
+      .withColumn("Experience", struct(lit("2").as("key"), col("Experience").as("value")))
+      .withColumn("Salary", struct(lit("3").as("key"), col("Salary").as("value")))
+    newdf.show(false)
 
     val ds = df.as[Employee]
     val newDS = ds.map(rec=>{

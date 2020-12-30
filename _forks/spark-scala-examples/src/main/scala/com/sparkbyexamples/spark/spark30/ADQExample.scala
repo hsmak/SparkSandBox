@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.spark30
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 
-object ADQExample extends App{
+object ADQExample extends App with MyContext{
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[5]")
@@ -12,8 +13,9 @@ object ADQExample extends App{
   spark.sparkContext.setLogLevel("ERROR")
 
   import spark.implicits._
-  // RDD[Tuple6]
-  val simpleData = Seq(("James","Sales","NY",90000,34,10000),
+  // Seq[Tuple6]
+  val simpleData = Seq(
+    ("James","Sales","NY",90000,34,10000),
     ("Michael","Sales","NY",86000,56,20000),
     ("Robert","Sales","CA",81000,30,23000),
     ("Maria","Finance","CA",90000,24,23000),
@@ -28,10 +30,8 @@ object ADQExample extends App{
   val df1=df.groupBy("department").count()
   println(df1.rdd.getNumPartitions)
 
-  spark.conf.set("spark.sql.adaptive.enabled",200)
+  spark.conf.set("spark.sql.adaptive.enabled",true)
   val df2=df.groupBy("department").count()
   println(df2.rdd.getNumPartitions)
-
-
 
 }
