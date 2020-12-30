@@ -1,9 +1,14 @@
 package com.sparkbyexamples.spark.dataframe
 
-import org.apache.spark.sql.types.{ArrayType, StringType, StructType}
+import com.sparkbyexamples.spark.MyContext
+import org.apache.spark.sql.types.{ArrayType, StringType, StructField, StructType}
 import org.apache.spark.sql.{Row, SparkSession}
 
-object ArrayToColumn extends App {
+/**
+  * Observations:
+  *     - Whenever "Row" is used to construct data rows, there must be a schema of StructType to be constructed alongside
+  */
+object ArrayToColumn extends App with MyContext{
 
   val spark = SparkSession.builder().appName("SparkByExamples.com")
     .master("local[1]")
@@ -15,8 +20,13 @@ object ArrayToColumn extends App {
     Row("Robert",List("CSharp","VB",""))
   )
 
-  val arraySchema = new StructType().add("name",StringType)
-    .add("subjects",ArrayType(StringType))
+//  val arraySchema = new StructType().add("name",StringType)
+//    .add("subjects",ArrayType(StringType))
+
+  // Alternative to the previous schema construction:
+  val arraySchema = StructType(Seq(
+    StructField("name",StringType),
+    StructField("subjects",ArrayType(StringType))))
 
   val arrayDF = spark.createDataFrame(spark.sparkContext.parallelize(arrayData),arraySchema)
   arrayDF.printSchema()
@@ -42,8 +52,12 @@ object ArrayToColumn extends App {
   df.printSchema()
   df.show()
 
+  /*
+   * Observations:
+   *    - Flatten records using Column operations of the DataFrame
+   */
   val df2 = df.select(
-    df("name") +: (0 until 2).map(i => df("subjects")(i).alias(s"LanguagesKnown$i")): _*
+    df("name") +: (0 until 2).map(i => df("subjects")(i).alias(s"LanguagesKnown$i")): _* // ':_*' is used to expand the resulting Arryay into repeated param colNames*
   )
 
   df2.show(false)

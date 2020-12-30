@@ -1,7 +1,8 @@
 package com.sparkbyexamples.spark.dataframe
 
-import java.io.File
+import com.sparkbyexamples.spark.MyContext
 
+import java.io.File
 import org.apache.avro.Schema
 import org.apache.spark.sql.{SaveMode, SparkSession}
 import org.apache.spark.sql.functions._
@@ -12,7 +13,7 @@ import org.apache.spark.sql.functions._
   * Avro file format
   *
   */
-object AvroExample {
+object AvroExample extends MyContext{
 
   def main(args: Array[String]): Unit = {
 
@@ -38,12 +39,12 @@ object AvroExample {
       */
     df.write.format("avro")
       .mode(SaveMode.Overwrite)
-      .save("C:\\tmp\\spark_out\\avro\\person.avro")
+      .save(s"$out_dir/avro/person.avro")
 
     /**
       * Read Avro File
       */
-    spark.read.format("avro").load("C:\\tmp\\spark_out\\avro\\person.avro").show()
+    spark.read.format("avro").load(s"$out_dir/avro/person.avro").show()
 
     /**
       * Write Avro Partition
@@ -51,33 +52,34 @@ object AvroExample {
     df.write.partitionBy("dob_year","dob_month")
       .format("avro")
       .mode(SaveMode.Overwrite)
-      .save("C:\\tmp\\spark_out\\avro\\person_partition.avro")
+      .save(s"$out_dir/avro/person_partition.avro")
 
     /**
       * Reading Avro Partition
       */
     spark.read
       .format("avro")
-      .load("C:\\tmp\\spark_out\\avro\\person_partition.avro")
+      .load(s"$out_dir/avro/person_partition.avro")
       .where(col("dob_year") === 2010)
       .show()
 
     /**
       * Explicit Avro schema
       */
+      val data_dir_mod = data_dir.replace("file://", "")
     val schemaAvro = new Schema.Parser()
-      .parse(new File("src/main/resources/person.avsc"))
+      .parse(new File(s"$data_dir_mod/person.avsc"))
 
     spark.read
       .format("avro")
       .option("avroSchema", schemaAvro.toString)
-      .load("C:\\tmp\\spark_out\\avro\\person.avro")
+      .load(s"$out_dir/avro/person.avro")
       .show()
 
     /**
       * Avro Spark SQL
       */
-    spark.sqlContext.sql("CREATE TEMPORARY VIEW PERSON USING avro OPTIONS (path \"C:/tmp/spark_out/avro/person.avro\")")
+    spark.sqlContext.sql("CREATE TEMPORARY VIEW PERSON USING avro OPTIONS (path \"" + s"$out_dir/avro/person.avro" + "\")")
     spark.sqlContext.sql("SELECT * FROM PERSON").show()
   }
 }
