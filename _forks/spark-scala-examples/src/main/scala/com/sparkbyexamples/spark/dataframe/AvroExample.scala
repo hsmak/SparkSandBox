@@ -7,6 +7,8 @@ import org.apache.avro.Schema
 import org.apache.spark.sql.{SaveMode, SparkSession}
 import org.apache.spark.sql.functions._
 
+import java.net.URI
+
 /**
   * Spark Avro library example
   * Avro schema example
@@ -65,10 +67,12 @@ object AvroExample extends MyContext{
 
     /**
       * Explicit Avro schema
+      *
+      * Observations:
+      *     - Supplying Path using URI since path has the protocol "file://"
       */
-      val data_dir_mod = data_dir.replace("file://", "")
     val schemaAvro = new Schema.Parser()
-      .parse(new File(s"$data_dir_mod/person.avsc"))
+      .parse(new File(new URI(s"$data_dir/person.avsc"))) // Avro Schema is in Json format
 
     spark.read
       .format("avro")

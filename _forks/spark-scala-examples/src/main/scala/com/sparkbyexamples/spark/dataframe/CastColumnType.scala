@@ -1,20 +1,21 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
+import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 
-import org.apache.spark.sql.{Row, SparkSession}
-import org.apache.spark.sql.types._
-import org.apache.spark.sql.functions._
-
-object CastColumnType extends App {
+object CastColumnType extends App with MyContext {
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
     .appName("SparkByExamples.com")
     .getOrCreate()
 
-  val simpleData = Seq(Row("James", 34, "2006-01-01", "true", "M", 3000.60),
+  val simpleData = Seq(
+    Row("James", 34, "2006-01-01", "true", "M", 3000.60),
     Row("Michael", 33, "1980-01-10", "true", "F", 3300.80),
     Row("Robert", 37, "06-01-1992", "false", "M", 5000.50)
   )

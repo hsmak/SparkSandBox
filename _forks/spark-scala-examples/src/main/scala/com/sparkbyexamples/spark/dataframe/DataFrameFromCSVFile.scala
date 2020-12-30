@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{SaveMode, SparkSession}
 
-object DataFrameFromCSVFile {
+object DataFrameFromCSVFile extends MyContext {
 
   def main(args:Array[String]):Unit= {
 
@@ -14,12 +15,17 @@ object DataFrameFromCSVFile {
     spark.sparkContext.setLogLevel("ERROR")
 
     //spark read csv file
-    val df = spark.read.csv("src/main/resources/zipcodes.csv")
+    val df = spark
+      .read
+      .csv(s"$data_dir/zipcodes.csv")
     df.show()
     df.printSchema()
 
     //read csv with options
-    val df2 = spark.read.options(Map("inferSchema"->"true","delimiter"->",","header"->"true")).csv("src/main/resources/zipcodes.csv")
+    val df2 = spark
+      .read
+      .options(Map("inferSchema"->"true","delimiter"->",","header"->"true"))
+      .csv(s"$data_dir/zipcodes.csv")
     df2.show()
     df2.printSchema()
 
@@ -48,18 +54,22 @@ object DataFrameFromCSVFile {
       .add("Notes",StringType,true)
 
     //Write dataframe back to csv file
-    val df_with_schema = spark.read.format("csv")
+    val df_with_schema = spark
+      .read
+      .format("csv")
       .option("header", "true")
       .schema(schema)
-      .load("src/main/resources/zipcodes.csv")
+      .load(s"$data_dir/zipcodes.csv")
 
     df_with_schema.printSchema()
     df_with_schema.show(false)
 
 
     //Write a csv file
-    df_with_schema.write.mode(SaveMode.Overwrite)
-      .csv("c:/tmp/spark_output/zipcodes")
+    df_with_schema
+      .write
+      .mode(SaveMode.Overwrite)
+      .csv(s"$out_dir/zipcodes")
 
   }
 }

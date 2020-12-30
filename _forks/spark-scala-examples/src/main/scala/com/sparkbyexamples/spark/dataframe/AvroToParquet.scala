@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{SaveMode, SparkSession}
 
-object AvroToParquet extends App {
+object AvroToParquet extends App with MyContext {
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
@@ -13,12 +14,12 @@ object AvroToParquet extends App {
 
   //read avro file
   val df = spark.read.format("avro")
-    .load("src/main/resources/zipcodes.avro")
+    .load(s"$data_dir//zipcodes.avro")
   df.show()
   df.printSchema()
 
   //convert to parquet
   df.write.mode(SaveMode.Overwrite)
-    .parquet("/tmp/parquet/zipcodes.parquet")
+    .parquet(s"$out_dir/parquet/zipcodes.parquet")
 
 }

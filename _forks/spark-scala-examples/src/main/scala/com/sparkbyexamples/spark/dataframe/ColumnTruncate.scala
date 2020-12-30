@@ -1,10 +1,11 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import com.sparkbyexamples.spark.SQLContextExample.spark
 import org.apache.log4j.lf5.LogLevel
 import org.apache.spark.sql.SparkSession
 
-object ColumnTruncate extends App {
+object ColumnTruncate extends App with MyContext {
 
   val spark:SparkSession = SparkSession.builder()
     .master("local[1]")

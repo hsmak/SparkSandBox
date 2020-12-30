@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
-object CreateDataFrame {
+object CreateDataFrame extends MyContext {
 
   def main(args:Array[String]):Unit={
 
@@ -14,7 +15,7 @@ object CreateDataFrame {
 
     import spark.implicits._
     val columns = Seq("language","users_count")
-    val data = Seq(("Java", "20000"), ("Python", "100000"), ("Scala", "3000"))
+    val data = Seq(("Java", "20000"), ("Python", "100000"), ("Scala", "3000")) // Seq[Tuple2]
     val rdd = spark.sparkContext.parallelize(data)
 
 
