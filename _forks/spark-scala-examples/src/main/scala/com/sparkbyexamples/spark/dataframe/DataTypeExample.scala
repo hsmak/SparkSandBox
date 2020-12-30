@@ -1,9 +1,7 @@
 package com.sparkbyexamples.spark.dataframe
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.types.{IntegerType, _}
-object DataTypeExample extends App{
-
-
-
+object DataTypeExample extends App with MyContext {
 
   val typeFromJson = DataType.fromJson(
     """{"type":"array",

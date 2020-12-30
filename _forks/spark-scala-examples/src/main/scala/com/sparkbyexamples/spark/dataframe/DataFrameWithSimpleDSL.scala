@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object DataFrameWithSimpleDSL {
+object DataFrameWithSimpleDSL extends MyContext {
 
   def main(args:Array[String]):Unit= {
 
@@ -11,7 +12,7 @@ object DataFrameWithSimpleDSL {
       .appName("SparkByExample")
       .getOrCreate()
 
-    val filePath = "C://000_Projects/opt/BigData/zipcodes.csv"
+    val filePath = s"$data_dir/zipcodes.csv"
 
     var df:DataFrame = spark.read.option("header","true").csv(filePath)
     df.printSchema()

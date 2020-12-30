@@ -1,12 +1,13 @@
 package com.sparkbyexamples.spark.dataframe
 
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{Row, SparkSession}
-import org.apache.spark.sql.types.{StringType,StructType}
+import org.apache.spark.sql.types.{StringType, StructType}
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.functions.col
 
-object FlattenNestedStruct extends App {
+object FlattenNestedStruct extends App with MyContext{
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")

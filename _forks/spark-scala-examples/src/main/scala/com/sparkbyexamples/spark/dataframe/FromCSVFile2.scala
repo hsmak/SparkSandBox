@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 
-object FromCSVFile2 {
+object FromCSVFile2 extends MyContext{
 
   def main(args:Array[String]):Unit= {
 
@@ -11,9 +12,9 @@ object FromCSVFile2 {
       .appName("SparkByExamples.com")
       .getOrCreate()
 
-    val filePath="src/main/resources/stream.csv"
+    val filePath=s"$data_dir/stream.csv"
 
-    val df3 = spark.read.option("header",true).csv("src/main/resources/zipcodes.csv")
+    val df3 = spark.read.option("header",true).csv(s"$data_dir/zipcodes.csv")
     df3.show(false)
 
 

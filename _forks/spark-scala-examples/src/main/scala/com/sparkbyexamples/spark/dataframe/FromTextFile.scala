@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 
-object FromTextFile {
+object FromTextFile extends MyContext{
 
   def main(args:Array[String]):Unit= {
 
@@ -12,7 +13,7 @@ object FromTextFile {
       .getOrCreate()
 
     //returns DataFrame
-    val df:DataFrame = spark.read.text("src/main/resources/csv/text01.txt")
+    val df:DataFrame = spark.read.text(s"$data_dir/csv/text01.txt")
     df.printSchema()
     df.show(false)
 
@@ -27,7 +28,7 @@ object FromTextFile {
     df2.show(false)
 
     // returns Dataset[String]
-    val ds:Dataset[String] = spark.read.textFile("src/main/resources/csv/text01.txt")
+    val ds:Dataset[String] = spark.read.textFile(s"$data_dir/csv/text01.txt")
     ds.printSchema()
     ds.show(false)
 

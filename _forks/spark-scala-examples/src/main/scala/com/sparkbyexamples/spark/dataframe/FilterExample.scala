@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types.{ArrayType, StringType, StructType}
 import org.apache.spark.sql.functions.array_contains
-object FilterExample extends App{
+object FilterExample extends App with MyContext {
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")

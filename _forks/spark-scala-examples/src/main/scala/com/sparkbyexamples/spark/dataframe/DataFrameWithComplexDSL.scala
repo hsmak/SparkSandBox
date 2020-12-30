@@ -1,11 +1,12 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.functions._
 case class Employee(firstName:String,lastName:String, email:String,salary:Int)
 case class Department(id:Int,name:String)
 case class DepartmentWithEmployees(department: Department, employees: Seq[Employee])
-object DataFrameWithDSL2 {
+object DataFrameWithDSL2 extends MyContext{
 
   def main(args: Array[String]): Unit = {
 
