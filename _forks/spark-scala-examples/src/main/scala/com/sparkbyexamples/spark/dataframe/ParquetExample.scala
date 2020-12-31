@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 
-object ParquetExample {
+object ParquetExample extends MyContext{
 
   def main(args:Array[String]):Unit= {
 
@@ -26,9 +27,9 @@ object ParquetExample {
     df.printSchema()
 
     df.write
-      .parquet("C:\\tmp\\output\\people.parquet")
+      .parquet(s"$out_dir/parquet/people.parquet")
 
-    val parqDF = spark.read.parquet("C:\\tmp\\output\\people.parquet")
+    val parqDF = spark.read.parquet(s"$out_dir/parquet/people.parquet")
     parqDF.createOrReplaceTempView("ParquetTable")
 
     spark.sql("select * from ParquetTable where salary >= 4000").explain()
@@ -39,9 +40,9 @@ object ParquetExample {
 
     df.write
       .partitionBy("gender","salary")
-      .parquet("C:\\tmp\\output\\people2.parquet")
+      .parquet(s"$out_dir/parquet/people2.parquet")
 
-    val parqDF2 = spark.read.parquet("C:\\tmp\\output\\people2.parquet")
+    val parqDF2 = spark.read.parquet(s"$out_dir/parquet/people2.parquet")
     parqDF2.createOrReplaceTempView("ParquetTable2")
 
     val df3 = spark.sql("select * from ParquetTable2  where gender='M' and salary >= 4000")
@@ -50,7 +51,7 @@ object ParquetExample {
     df3.show()
 
     val parqDF3 = spark.read
-      .parquet("C:\\tmp\\output\\people2.parquet\\gender=M")
+      .parquet(s"$out_dir/parquet/people2.parquet/gender=M")
     parqDF3.show()
 
   }

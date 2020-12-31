@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
-object GroupbyExample extends App {
+object GroupbyExample extends App with MyContext{
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")

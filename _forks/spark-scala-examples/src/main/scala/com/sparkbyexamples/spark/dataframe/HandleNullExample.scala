@@ -1,15 +1,16 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 
-object HandleNullExample extends App{
+object HandleNullExample extends App with MyContext{
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
     .appName("SparkByExamples.com")
     .getOrCreate()
 
-  val filePath="src/main/resources/small_zipcode.csv"
+  val filePath=s"$data_dir/small_zipcode.csv"
 
   val df = spark.read.options(Map("inferSchema"->"true","delimiter"->",","header"->"true")).csv(filePath)
   df.printSchema()

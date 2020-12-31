@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object SaveDataFrame {
+object SaveDataFrame extends MyContext{
 
   def main(args: Array[String]): Unit = {
     val spark: SparkSession = SparkSession.builder()
@@ -10,10 +11,10 @@ object SaveDataFrame {
       .appName("SparkByExample")
       .getOrCreate()
 
-    val filePath = "C://000_Projects/opt/BigData/zipcodes.csv"
+    val filePath = s"$data_dir/zipcodes.csv"
 
     var df:DataFrame = spark.read.option("header","true").csv(filePath)
 
-    df.repartition(5).write.option("header","true").csv("c:/tmp/output/df1")
+    df.repartition(5).write.option("header","true").csv(s"$out_dir/parquet/df1")
   }
 }

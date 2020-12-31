@@ -1,10 +1,11 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructType}
 import org.apache.spark.sql.functions.{col, _}
 
-object RenameColDataFrame {
+object RenameColDataFrame extends MyContext{
 
   def main(args:Array[String]):Unit= {
 
