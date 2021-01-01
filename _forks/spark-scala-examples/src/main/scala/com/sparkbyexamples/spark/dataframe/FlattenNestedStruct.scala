@@ -7,6 +7,11 @@ import org.apache.spark.sql.types.{StringType, StructType}
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.functions.col
 
+/**
+  * Observations:
+  *     - Use "struct_name.*"     -> for nested structs
+  *     - Use "explode(col_name)" -> for flattening an Array
+  */
 object FlattenNestedStruct extends App with MyContext{
 
   val spark: SparkSession = SparkSession.builder()
@@ -24,13 +29,17 @@ object FlattenNestedStruct extends App with MyContext{
 
   val structureSchema = new StructType()
     .add("name",new StructType()
+
       .add("firstname",StringType)
       .add("middlename",StringType)
       .add("lastname",StringType))
+
     .add("address",new StructType()
+
       .add("current",new StructType()
         .add("state",StringType)
         .add("city",StringType))
+
       .add("previous",new StructType()
         .add("state",StringType)
         .add("city",StringType)))
@@ -44,6 +53,7 @@ object FlattenNestedStruct extends App with MyContext{
   val df2 = df.select(col("name.*"),
     col("address.current.*"),
     col("address.previous.*"))
+  df2.show(false)
 
   val df2Flatten = df2.toDF("fname","mename","lname","currAddState",
     "currAddCity","prevAddState","prevAddCity")
@@ -53,11 +63,11 @@ object FlattenNestedStruct extends App with MyContext{
 
 
   def flattenStructSchema(schema: StructType, prefix: String = null) : Array[Column] = {
-    schema.fields.flatMap(f => {
-      val columnName = if (prefix == null) f.name else (prefix + "." + f.name)
+    schema.fields.flatMap(sf => {
+      val columnName = if (prefix == null) sf.name else (prefix + "." + sf.name)
 
-      f.dataType match {
-        case st: StructType => flattenStructSchema(st, columnName)
+      sf.dataType match {
+        case st: StructType => flattenStructSchema(st, columnName) // if StructField is of type StructType, recurse into the function
         case _ => Array(col(columnName).as(columnName.replace(".","_")))
       }
     })

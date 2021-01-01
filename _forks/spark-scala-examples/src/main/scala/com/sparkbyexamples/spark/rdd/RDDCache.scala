@@ -19,6 +19,10 @@ object RDDCache extends App with MyContext {
     ZipCode(strArray(0).toInt,strArray(1),strArray(3),strArray(4))
   })
 
+  // Once we have RDD[T] other than RDD[Row] we can create a DataFrame out of it like the following:
+  import spark.implicits._
+  rdd2.toDF.show
+
   rdd2.cache()
 
 

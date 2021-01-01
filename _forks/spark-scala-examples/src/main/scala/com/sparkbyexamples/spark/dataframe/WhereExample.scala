@@ -1,10 +1,11 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.functions.array_contains
 import org.apache.spark.sql.types.{ArrayType, StringType, StructType}
 import org.apache.spark.sql.{Row, SparkSession}
 
-object WhereExample extends App{
+object WhereExample extends App with MyContext{
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")

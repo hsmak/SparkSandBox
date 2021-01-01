@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 
-object UnionExample extends App{
+object UnionExample extends App with MyContext{
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
@@ -13,7 +14,8 @@ object UnionExample extends App{
 
   import spark.implicits._
 
-  val simpleData = Seq(("James","Sales","NY",90000,34,10000),
+  val simpleData = Seq(
+    ("James","Sales","NY",90000,34,10000),
     ("Michael","Sales","NY",86000,56,20000),
     ("Robert","Sales","CA",81000,30,23000),
     ("Maria","Finance","CA",90000,24,23000)

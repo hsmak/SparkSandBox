@@ -1,5 +1,7 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
+
 import javax.xml.transform.stream.StreamSource
 import org.apache.spark.sql.{Encoders, Row, SparkSession}
 import org.apache.spark.sql.types.{ArrayType, DataType, DataTypes, DoubleType, IntegerType, MapType, StringType, StructField, StructType}
@@ -7,7 +9,7 @@ import org.apache.spark.sql.functions.{col, from_json, struct, when}
 
 import scala.io.Source
 
-object StructTypeUsage extends App{
+object StructTypeUsage extends App with MyContext{
 
   /*
   StructType
@@ -61,9 +63,11 @@ object StructTypeUsage extends App{
 
   val structureSchema = new StructType()
     .add("name",new StructType()
+
       .add("firstname",StringType)
       .add("middlename",StringType)
       .add("lastname",StringType))
+
     .add("id",StringType)
     .add("gender",StringType)
     .add("salary",IntegerType)
@@ -97,13 +101,16 @@ object StructTypeUsage extends App{
   /* Adding the structure of the DataFrame
   * Changing the structure of the DataFrame
   * */
-  val updatedDF = df4.withColumn("OtherInfo", struct(  col("id").as("identifier"),
-    col("gender").as("gender"),
-    col("salary").as("salary"),
-    when(col("salary").cast(IntegerType) < 2000,"Low")
-      .when(col("salary").cast(IntegerType) < 4000,"Medium")
-      .otherwise("High").alias("Salary_Grade")
-  )).drop("id","gender","salary")
+  val updatedDF = df4
+    .withColumn("OtherInfo",
+    struct(
+      col("id").as("identifier"),
+      col("gender").as("gender"),
+      col("salary").as("salary"),
+      when(col("salary").cast(IntegerType) < 2000,"Low")
+        .when(col("salary").cast(IntegerType) < 4000,"Medium")
+        .otherwise("High").alias("Salary_Grade")))
+    .drop("id","gender","salary")
 
   updatedDF.printSchema()
   updatedDF.show(false)

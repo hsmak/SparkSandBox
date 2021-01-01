@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types.{ArrayType, IntegerType, MapType, StringType, StructType}
 import org.apache.spark.sql.functions._
-object WithColumn {
+object WithColumn extends MyContext{
 
   def main(args:Array[String]):Unit= {
 
@@ -73,9 +74,9 @@ object WithColumn {
     var dfFromData = spark.createDataFrame(data).toDF(columns:_*)
     dfFromData.printSchema()
 
-    val newDF = dfFromData.map(f=>{
-      val nameSplit = f.getAs[String](0).split(",")
-      val addSplit = f.getAs[String](1).split(",")
+    val newDF = dfFromData.map(row=>{
+      val nameSplit = row.getAs[String](0).split(",")
+      val addSplit = row.getAs[String](1).split(",")
       (nameSplit(0),nameSplit(1),addSplit(0),addSplit(1),addSplit(2),addSplit(3))
     })
     val finalDF = newDF.toDF("First Name","Last Name","Address Line1","City","State","zipCode")

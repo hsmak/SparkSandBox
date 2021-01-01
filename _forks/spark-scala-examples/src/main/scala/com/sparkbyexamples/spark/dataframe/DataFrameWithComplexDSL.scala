@@ -6,6 +6,12 @@ import org.apache.spark.sql.functions._
 case class Employee(firstName:String,lastName:String, email:String,salary:Int)
 case class Department(id:Int,name:String)
 case class DepartmentWithEmployees(department: Department, employees: Seq[Employee])
+
+/**
+  * Observations:
+  *     - Use "struct_name.*"     -> for nested structs
+  *     - Use "explode(col_name)" -> for flattening an Array
+  */
 object DataFrameWithDSL2 extends MyContext{
 
   def main(args: Array[String]): Unit = {
@@ -37,10 +43,14 @@ object DataFrameWithDSL2 extends MyContext{
       .appName("SparkByExample")
       .getOrCreate()
 
-    import spark.implicits._
 
-    val df = spark.createDataFrame(data1)
-    val df2 = spark.createDataFrame(data2)
+    //val df = spark.createDataFrame(data1)
+    //val df2 = spark.createDataFrame(data2)
+    // Alternative to the previous two lines
+    import spark.implicits._
+    val df = data1.toDF
+    val df2 = data2.toDF
+
 
     //union
     val finalDF = df.union(df2)
@@ -48,7 +58,13 @@ object DataFrameWithDSL2 extends MyContext{
     finalDF.show(false)
 
     finalDF.select("department.*").printSchema()
-    finalDF.select(explode(col("employees"))).select("col.*").show(false)
+    finalDF.select(explode(col("employees"))).show(false)
+    finalDF.select(explode(col("employees"))).select("col.*").show(false) // default column name after exploding is "col"
+
+    // All together
+    finalDF.select($"department", explode($"employees").as("empls")) // exploding the Array
+      .select($"department.*", $"empls.*") // expanding; flattening, the Nested StructTypes
+      .show(false)
 
   }
 }
