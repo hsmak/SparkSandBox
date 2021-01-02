@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe.examples
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 
-object ForEachExample extends App {
+object ForEachExample extends App with MyContext{
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")

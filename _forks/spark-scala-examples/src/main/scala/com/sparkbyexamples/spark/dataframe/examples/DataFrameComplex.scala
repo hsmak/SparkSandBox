@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe.examples
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types._
 
-object DataFrameComplex extends App {
+object DataFrameComplex extends App with MyContext{
 
 
   val spark:SparkSession = SparkSession.builder()
@@ -20,15 +21,15 @@ object DataFrameComplex extends App {
   )
 
   val structureSchema = new StructType()
-    .add("name",new StructType()
+    .add("name",new StructType() // Nested StructType
       .add("firstname",StringType)
       .add("middlename",StringType)
       .add("lastname",StringType))
     .add("id",StringType)
     .add("location",StringType)
     .add("salary",IntegerType)
-    .add("languagesKnown",ArrayType(StringType))
-    .add("properties",MapType(StringType,StringType))
+    .add("languagesKnown",ArrayType(StringType)) // ArrayType
+    .add("properties",MapType(StringType,StringType)) // MapType
 
 
   val df2 = spark.createDataFrame(spark.sparkContext.parallelize(structureData),structureSchema)

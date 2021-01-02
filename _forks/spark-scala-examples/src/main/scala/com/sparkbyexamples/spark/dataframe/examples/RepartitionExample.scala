@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe.examples
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{SaveMode, SparkSession}
 
-object RepartitionExample extends App {
+object RepartitionExample extends App with MyContext {
 
   val spark:SparkSession = SparkSession.builder()
     .master("local[5]")
@@ -13,10 +14,10 @@ object RepartitionExample extends App {
  // spark.sqlContext.setConf("spark.default.parallelism", "500")
   //spark.conf.set("spark.default.parallelism", "500")
   val df = spark.range(0,20)
- df.printSchema()
+  df.printSchema()
   println(df.rdd.partitions.length)
 
-  df.write.mode(SaveMode.Overwrite)csv("c:/tmp/df-partition.csv")
+  df.write.mode(SaveMode.Overwrite).csv(s"$out_dir/repart/df-partition.csv")
 
   val df2 = df.repartition(10)
 

@@ -1,5 +1,6 @@
 package com.sparkbyexamples.spark.dataframe.examples
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructType}
 import org.apache.spark.sql.functions.col
@@ -9,7 +10,7 @@ import org.apache.spark.sql.functions.col
   *     - Load into DataFrame from CSV via spark.read.csv()
   *     - Case Class T and Dataset[T]
   */
-object DropColumn extends App {
+object DropColumn extends App with MyContext{
 
   val spark:SparkSession = SparkSession.builder()
     .master("local[5]")
