@@ -1,10 +1,11 @@
 package com.sparkbyexamples.spark.dataframe.functions.window
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions.row_number
 
-object RowNumber extends App {
+object RowNumber extends App with MyContext {
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
