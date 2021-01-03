@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe.functions.string
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{lit, _}
-object ConcatExample extends App {
+object ConcatExample extends App with MyContext{
 
   val spark = SparkSession.builder()
     .appName("SparkByExamples.com")

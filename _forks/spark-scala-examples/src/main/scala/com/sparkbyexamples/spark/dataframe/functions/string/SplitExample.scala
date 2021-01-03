@@ -1,10 +1,11 @@
 package com.sparkbyexamples.spark.dataframe.functions.string
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{ArrayType, DataType, DataTypes}
 
-object SplitExample extends App{
+object SplitExample extends App with MyContext {
 
   val spark = SparkSession.builder()
     .appName("SparkByExamples.com")
