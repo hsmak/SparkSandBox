@@ -1,10 +1,11 @@
 package com.sparkbyexamples.spark.dataframe.functions.datetime
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{col, to_date, to_timestamp}
 import org.apache.spark.sql.types.DateType
 
-object TimestampToDate extends App {
+object TimestampToDate extends App with MyContext {
 
   val spark:SparkSession = SparkSession.builder()
     .master("local")

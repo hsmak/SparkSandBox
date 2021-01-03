@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe.functions.datetime
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{current_date, current_timestamp, date_format}
 
-object TimestampToString extends App {
+object TimestampToString extends App with MyContext {
 
   val spark:SparkSession = SparkSession.builder()
     .master("local")

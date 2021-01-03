@@ -1,10 +1,11 @@
 package com.sparkbyexamples.spark.dataframe.functions.datetime
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{col, date_format, to_timestamp}
 
 
-object DayAndWeekOfYear extends App {
+object DayAndWeekOfYear extends App with MyContext {
 
   val spark: SparkSession = SparkSession.builder()
     .master("local")
@@ -25,6 +26,7 @@ object DayAndWeekOfYear extends App {
     .withColumn("day_of_year", date_format(col("input_timestamp"), "D"))
     .show(false)
 
+  //Doesn't work with Spark 3
   //Get Week of the Year example
   df.withColumn("input_timestamp",
     to_timestamp(col("input_timestamp")))

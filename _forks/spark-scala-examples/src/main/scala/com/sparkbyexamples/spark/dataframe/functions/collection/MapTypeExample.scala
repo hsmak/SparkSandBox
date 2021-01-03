@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe.functions.collection
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.functions.{col, explode, lit, map, map_concat, map_from_entries, map_keys, map_values}
-import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.sql.{Row, SaveMode, SparkSession}
 import org.apache.spark.sql.types._
 
-object MapTypeExample extends App {
+object MapTypeExample extends App with MyContext {
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
@@ -44,6 +45,9 @@ object MapTypeExample extends App {
   mapTypeDF.select(col("name"),map_values(col("properties"))).show(false)
   mapTypeDF.select(col("name"),map_concat(col("properties"),col("secondProp"))).show(false)
 
-
-
+  mapTypeDF
+    .write
+    .mode(SaveMode.Overwrite)
+    //.csv(s"$out_dir/MapExample") // CSV can't have Map values
+    .json(s"$out_dir/MapExample")
 }

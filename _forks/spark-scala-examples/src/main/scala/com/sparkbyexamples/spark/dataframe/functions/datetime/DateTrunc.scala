@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe.functions.datetime
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{last_day, _}
 
-object DateTrunc extends App {
+object DateTrunc extends App with MyContext {
 
 
   val spark:SparkSession = SparkSession.builder()

@@ -1,10 +1,13 @@
 package com.sparkbyexamples.spark.dataframe.functions.datetime
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{col, to_timestamp,date_format}
+import org.apache.spark.sql.functions.{col, date_format, to_timestamp}
 
-
-object DayWeekAndWeekMonth extends App {
+/**
+  * Doesn't work with Spark 3
+  */
+object DayWeekAndWeekMonth extends App with MyContext {
 
   val spark: SparkSession = SparkSession.builder()
     .master("local")

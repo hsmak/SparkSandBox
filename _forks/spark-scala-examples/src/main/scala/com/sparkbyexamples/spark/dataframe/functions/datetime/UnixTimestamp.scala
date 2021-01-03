@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe.functions.datetime
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{from_unixtime, unix_timestamp, _}
 
-object UnixTimestamp extends App {
+object UnixTimestamp extends App with MyContext {
 
   val spark:SparkSession = SparkSession.builder()
     .master("local")
@@ -18,6 +19,10 @@ object UnixTimestamp extends App {
     .toDF("timestamp_1","timestamp_2","timestamp_3")
   inputDF.printSchema()
   inputDF.show(false)
+
+  /*
+   * Didn't woth with Spark 3
+   */
 
   //Convert timestamp to unix timestamp
    val df = inputDF.select(

@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe.functions.datetime
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
-object DateExamples {
+object DateExamples extends MyContext{
 
   def main(args: Array[String]): Unit = {
 
@@ -12,7 +13,11 @@ object DateExamples {
       .appName("SparkByExample")
       .getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")
-    val data = Seq(("2019-01-23"),("2019-06-24"),("2019-09-20"))
+
+    val data = Seq(
+      "2019-01-23",
+      "2019-06-24",
+      "2019-09-20")
 
     import spark.sqlContext.implicits._
     val df = data.toDF("date")

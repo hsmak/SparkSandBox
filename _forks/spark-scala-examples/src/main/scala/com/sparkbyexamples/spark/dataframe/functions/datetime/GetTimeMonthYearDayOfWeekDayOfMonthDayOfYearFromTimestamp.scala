@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe.functions.datetime
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{col,hour,minute,second}
+import org.apache.spark.sql.functions.{col, dayofmonth, dayofweek, dayofyear, hour, minute, second}
 
-object GetTimeFromTimestamp extends App {
+object GetTimeMonthYearDayOfWeekDayOfMonthDayOfYearFromTimestamp extends App with MyContext {
 
   val spark:SparkSession = SparkSession.builder()
     .master("local")
@@ -19,7 +20,10 @@ object GetTimeFromTimestamp extends App {
     ("2019-11-16 16:50:59.406")).toDF("input_timestamp")
 
 
-  df.withColumn("hour", hour(col("input_timestamp")))
+  df.withColumn("dayOfYear", dayofyear(col("input_timestamp")))
+    .withColumn("dayOfMonth", dayofmonth(col("input_timestamp")))
+    .withColumn("dayOfWeek", dayofweek(col("input_timestamp")))
+    .withColumn("hour", hour(col("input_timestamp")))
     .withColumn("minute", minute(col("input_timestamp")))
     .withColumn("second", second(col("input_timestamp")))
     .show(false)

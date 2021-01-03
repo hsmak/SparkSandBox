@@ -1,10 +1,11 @@
 package com.sparkbyexamples.spark.dataframe.functions.datetime
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.LongType
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object TimestampDiff extends App {
+object TimestampDiff extends App with MyContext {
 
   val spark:SparkSession = SparkSession.builder()
     .master("local")

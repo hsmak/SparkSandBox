@@ -1,9 +1,10 @@
 package com.sparkbyexamples.spark.dataframe.functions.datetime
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
-object DateFormat extends App {
+object DateFormat extends App with MyContext {
 
   val spark:SparkSession = SparkSession.builder()
     .master("local")
@@ -75,6 +76,5 @@ object DateFormat extends App {
       date_format(to_date(col("Date"),"yyyy MMMM dd"),"MM/dd/yyyy"))
     .otherwise("Unknown Format").as("Formated Date")
   ).show()
-
 
 }
