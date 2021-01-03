@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe.functions
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
-object SortExample extends App {
+object SortExample extends App with MyContext{
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
@@ -13,7 +14,8 @@ object SortExample extends App {
 
   import spark.implicits._
 
-  val simpleData = Seq(("James","Sales","NY",90000,34,10000),
+  val simpleData = Seq(
+    ("James","Sales","NY",90000,34,10000),
     ("Michael","Sales","NY",86000,56,20000),
     ("Robert","Sales","CA",81000,30,23000),
     ("Maria","Finance","CA",90000,24,23000),
@@ -21,8 +23,8 @@ object SortExample extends App {
     ("Scott","Finance","NY",83000,36,19000),
     ("Jen","Finance","NY",79000,53,15000),
     ("Jeff","Marketing","CA",80000,25,18000),
-    ("Kumar","Marketing","NY",91000,50,21000)
-  )
+    ("Kumar","Marketing","NY",91000,50,21000))
+
   val df = simpleData.toDF("employee_name","department","state","salary","age","bonus")
   df.printSchema()
   df.show()
@@ -39,8 +41,15 @@ object SortExample extends App {
   df.sort(col("department").asc,col("state").desc).show(false)
   df.orderBy(col("department").asc,col("state").desc).show(false)
 
-  df.select($"employee_name",asc("department"),desc("state"),$"salary",$"age",$"bonus").show(false)
-  df.createOrReplaceTempView("EMP")
-  spark.sql(" select employee_name,asc('department'),desc('state'),salary,age,bonus from EMP").show(false)
+  // Exception: UnsupportedOperationException: Cannot generate code for expression: input[1, string, true] ASC NULLS FIRST
+//  df.select($"employee_name",asc("department"), desc("state"), $"salary", $"age", $"bonus")
+//    .show(false)
 
+
+  // Exception: Undefined function: 'asc'. This function is neither a registered temporary function nor a permanent function registered in the database 'default'
+//  df.createOrReplaceTempView("EMP")
+  //  spark.sql(
+//    """select employee_name, asc('department'), desc('state'), salary, age, bonus
+//      |from EMP""".stripMargin)
+//    .show(false)
 }

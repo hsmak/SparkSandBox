@@ -1,10 +1,11 @@
 package com.sparkbyexamples.spark.dataframe.functions
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{col, lit, typedLit, when}
 import org.apache.spark.sql.types.IntegerType
 
-object AddColumn extends App {
+object AddColumn extends App with MyContext{
 
   val spark = SparkSession.builder()
     .appName("SparkByExamples.com")
