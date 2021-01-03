@@ -32,11 +32,11 @@ object ArrayToColumn extends App with MyContext{
   arrayDF.printSchema()
   arrayDF.show()
 
-//  val arrayDFColumn = df.select(
-//    df("name") +: (0 until 2).map(i => df("subjects")(i).alias(s"LanguagesKnown$i")): _*
-//  )
-//
-//  arrayDFColumn.show(false)
+  val arrayDFColumn = arrayDF.select(
+    arrayDF("name") +: (0 until 2).map(i => arrayDF("subjects")(i).alias(s"LanguagesKnown$i")): _*
+  )
+
+  arrayDFColumn.show(false)
 
   //How to convert Array of Array to column
   val arrayArrayData = Seq(
@@ -54,7 +54,8 @@ object ArrayToColumn extends App with MyContext{
 
   /*
    * Observations:
-   *    - Flatten records using Column operations of the DataFrame
+   *    - Flatten records using Column operations of the DataFrame horizontally
+   *    - Explode(), however, will flatten the elements vertically
    */
   val df2 = df.select(
     df("name") +: (0 until 2).map(i => df("subjects")(i).alias(s"LanguagesKnown$i")): _* // ':_*' is used to expand the resulting Arryay into repeated param colNames*

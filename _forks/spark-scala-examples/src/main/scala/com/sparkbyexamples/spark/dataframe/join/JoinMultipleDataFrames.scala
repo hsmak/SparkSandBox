@@ -1,8 +1,9 @@
 package com.sparkbyexamples.spark.dataframe.join
 
+import com.sparkbyexamples.spark.MyContext
 import org.apache.spark.sql.SparkSession
 
-object JoinMultipleDataFrames extends App {
+object JoinMultipleDataFrames extends App with MyContext {
 
   val spark: SparkSession = SparkSession.builder()
     .master("local[1]")
@@ -11,33 +12,37 @@ object JoinMultipleDataFrames extends App {
 
   spark.sparkContext.setLogLevel("ERROR")
 
-  val emp = Seq((1,"Smith","10"),
+  val emp = Seq(
+    (1,"Smith","10"),
     (2,"Rose","20"),
     (3,"Williams","10"),
     (4,"Jones","10"),
     (5,"Brown","40"),
-    (6,"Brown","50")
-  )
+    (6,"Brown","50"))
+
   val empColumns = Seq("emp_id","name","emp_dept_id")
+
   import spark.sqlContext.implicits._
   val empDF = emp.toDF(empColumns:_*)
   empDF.show(false)
 
-  val dept = Seq(("Finance",10),
+  val dept = Seq(
+    ("Finance",10),
     ("Marketing",20),
     ("Sales",30),
-    ("IT",40)
-  )
+    ("IT",40))
+
   val deptColumns = Seq("dept_name","dept_id")
   val deptDF = dept.toDF(deptColumns:_*)
   deptDF.show(false)
 
-  val address = Seq((1,"1523 Main St","SFO","CA"),
+  val address = Seq(
+    (1,"1523 Main St","SFO","CA"),
     (2,"3453 Orange St","SFO","NY"),
     (3,"34 Warner St","Jersey","NJ"),
     (4,"221 Cavalier St","Newark","DE"),
-    (5,"789 Walnut St","Sandiago","CA")
-  )
+    (5,"789 Walnut St","Sandiago","CA"))
+
   val addColumns = Seq("emp_id","addline1","city","state")
   val addDF = address.toDF(addColumns:_*)
   addDF.show(false)
@@ -62,8 +67,17 @@ object JoinMultipleDataFrames extends App {
   deptDF.createOrReplaceTempView("DEPT")
   addDF.createOrReplaceTempView("ADD")
 
-  spark.sql("select * from EMP e, DEPT d, ADD a " +
-    "where e.emp_dept_id == d.dept_id and e.emp_id == a.emp_id")
+  spark.sql(
+    """select * from EMP e, DEPT d, ADD a
+      |where e.emp_dept_id == d.dept_id
+      |and e.emp_id == a.emp_id""".stripMargin)
+    .show(false)
+
+  // Alternatively
+  spark.sql(
+    """select * from EMP e
+      |INNER JOIN DEPT d ON e.emp_dept_id == d.dept_id
+      |INNER JOIN ADD a ON e.emp_id == a.emp_id""".stripMargin)
     .show(false)
 
 
