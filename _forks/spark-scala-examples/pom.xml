@@ -19,7 +19,7 @@
 
         <!--scala-->
         <scala.version>2.12.12</scala.version>
-        <scala.compact.version>2.12</scala.compact.version>
+        <scala.compat.version>2.12</scala.compat.version>
 
         <!--test - scalatest/spec-->
         <spec2.version>4.10.5</spec2.version>
@@ -52,14 +52,14 @@
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_${scala.compact.version}</artifactId>
+            <artifactId>spark-core_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-sql_${scala.compact.version}</artifactId>
+            <artifactId>spark-sql_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
          <scope>compile</scope>
         </dependency>
@@ -71,7 +71,7 @@
        </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-avro_${scala.compact.version}</artifactId>
+            <artifactId>spark-avro_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
 

@@ -17,7 +17,7 @@
         <spark.version>3.0.1</spark.version>
         <!--<hadoop.version>2.6.0-cdh5.8.2</hadoop.version>-->
         <scala.version>2.12.12</scala.version>
-        <scala.compact.version>2.12</scala.compact.version>
+        <scala.compat.version>2.12</scala.compat.version>
 
 
         <!-- test - scalatest/spec -->
@@ -56,32 +56,32 @@
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_${scala.compact.version}</artifactId>
+            <artifactId>spark-core_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-sql_${scala.compact.version}</artifactId>
+            <artifactId>spark-sql_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-graphx_${scala.compact.version}</artifactId>
+            <artifactId>spark-graphx_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-streaming_${scala.compact.version}</artifactId>
+            <artifactId>spark-streaming_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-mllib_${scala.compact.version}</artifactId>
+            <artifactId>spark-mllib_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-hive_${scala.compact.version}</artifactId>
+            <artifactId>spark-hive_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
     </dependencies>

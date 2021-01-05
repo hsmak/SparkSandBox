@@ -21,7 +21,7 @@
 
         <!--scala-->
         <scala.version>2.12.12</scala.version>
-        <scala.compact.version>2.12</scala.compact.version>
+        <scala.compat.version>2.12</scala.compat.version>
 
         <!--test - scalatest/spec-->
         <spec2.version>4.10.5</spec2.version>
@@ -49,19 +49,19 @@
         <!--Spark-->
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_${scala.compact.version}</artifactId>
+            <artifactId>spark-core_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
             <!--<scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-sql_${scala.compact.version}</artifactId>
+            <artifactId>spark-sql_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
             <!--<scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-mllib_${scala.compact.version}</artifactId>
+            <artifactId>spark-mllib_${scala.compat.version}</artifactId>
             <version>${spark.version}</version>
             <!--<scope>provided</scope>-->
         </dependency>
@@ -114,19 +114,19 @@
         </dependency>
         <dependency>
             <groupId>org.scalatest</groupId>
-            <artifactId>scalatest_${scala.compact.version}</artifactId>
+            <artifactId>scalatest_${scala.compat.version}</artifactId>
             <version>${scalatest.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.specs2</groupId>
-            <artifactId>specs2-core_${scala.compact.version}</artifactId>
+            <artifactId>specs2-core_${scala.compat.version}</artifactId>
             <version>${spec2.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.specs2</groupId>
-            <artifactId>specs2-junit_${scala.compact.version}</artifactId>
+            <artifactId>specs2-junit_${scala.compat.version}</artifactId>
             <version>${spec2.version}</version>
             <scope>test</scope>
         </dependency>
