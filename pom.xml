@@ -17,10 +17,10 @@
         <encoding>UTF-8</encoding>
 
         <!--spark-->
-        <spark.version>3.0.1</spark.version>
+        <spark.version>3.1.2</spark.version>
 
         <!--scala-->
-        <scala.version>2.12.12</scala.version>
+        <scala.version>2.12.13</scala.version>
         <scala.compat.version>2.12</scala.compat.version>
 
         <!--test - scalatest/spec-->
